@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM SOP Pemprov Bali - Sistem Monitoring & Evaluasi SOP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bali: {
+                            red: '#990000',
+                            gold: '#D4AF37',
+                            dark: '#1F2937',
+                            light: '#F3F4F6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    .role-btn{display:none!important}
+</style>
+<style>
+#ortibali-tools{position:fixed;right:14px;bottom:14px;z-index:99999;display:flex;gap:7px;align-items:center;font:12px Arial,sans-serif}
+#ortibali-tools a,#ortibali-tools button{border:1px solid #b91c2c;background:#17171b;color:#fff;border-radius:22px;padding:8px 11px;text-decoration:none;cursor:pointer;box-shadow:0 3px 14px #0003}
+#ortibali-tools button{background:#c91528}#ortibali-tools a:hover,#ortibali-tools button:hover{filter:brightness(1.15)}
+</style><style id="ortibali-sidebar-stability">
+/* Tatalaksana sidebar: keep navigation and artwork in a stable column */
+.app>.sidebar{box-sizing:border-box;min-width:0;display:flex;flex-direction:column;overflow:hidden;background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important;isolation:isolate}.app>.sidebar:before,.app>.sidebar:after{pointer-events:none!important}.app>.sidebar .brand{flex:0 0 auto}.app>.sidebar .nav{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;align-content:start}.app>.sidebar .nav button{box-sizing:border-box;width:100%;min-height:42px;margin:0;transform:none!important;transition:background-color .16s ease,color .16s ease}.app>.sidebar .sidefoot{flex:0 0 auto}@media(max-width:720px){.app>.sidebar{overflow:visible}.app>.sidebar .nav{display:flex;overflow-x:auto;overflow-y:hidden}.app>.sidebar .nav button{width:auto;min-width:max-content;white-space:nowrap}}
+</style>
+<link rel="stylesheet" href="/ortibali-mobile.css">
+</head>
+<body class="bg-slate-100 text-slate-800 flex flex-col min-h-screen"><div id="ortibali-tools"><a href="index.html" title="Kembali ke beranda ORTIBALI">⌂ Beranda</a></div><!-- TOP ROLE SWITCHER BAR (SIMULATOR ROLE) -->
+    <div class="bg-slate-900 text-white px-4 py-2.5 shadow-md sticky top-0 z-50 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm">
+        <div class="flex items-center gap-2">
+            <span class="inline-block w-2.5 h-2.5 bg-red-600 rounded-full animate-ping"></span>
+            <span class="font-bold tracking-wide uppercase text-amber-400">Ganti Role / Akses SIM SOP:</span>
+        </div>
+        <div class="flex items-center gap-1.5 overflow-x-auto py-1">
+            <button onclick="switchRole('biro')" id="btn-role-biro" class="role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-red-700 text-white shadow-sm">
+                <i class="fa-solid fa-user-shield"></i> Admin Biro
+            </button>
+            <button onclick="switchRole('pd')" id="btn-role-pd" class="role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                <i class="fa-solid fa-building-user"></i> Admin PD
+            </button>
+            <button onclick="switchRole('verifikator_pd')" id="btn-role-verifikator_pd" class="role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                <i class="fa-solid fa-file-circle-check"></i> Verifikator PD
+            </button>
+            <button onclick="switchRole('pengawas')" id="btn-role-pengawas" class="role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700">
+                <i class="fa-solid fa-eye text-amber-400"></i> Pengawas Daerah (Read-Only)
+            </button>
+        </div>
+        <div class="flex items-center gap-3 text-slate-300 text-xs">
+            <button onclick="handleLogout()" class="bg-red-800 hover:bg-red-700 text-white px-3 py-1 rounded-lg border border-red-700 font-semibold transition flex items-center gap-1">
+                <i class="fa-solid fa-right-from-bracket"></i> Keluar
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-[45px] z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-red-800 text-amber-400 rounded-xl flex items-center justify-center font-bold text-xl shadow-md border-2 border-amber-400/40">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-lg sm:text-xl leading-tight">SIM SOP PEMPROV BALI</h1>
+                    <p class="text-xs text-slate-500 font-medium">Sistem Informasi Manajemen & Monitoring Evaluasi Standard Operating Procedure</p>
+                </div>
+            </div>
+
+            <!-- Current User Badge -->
+            <div id="user-badge" class="flex items-center gap-3 bg-slate-50 border border-slate-200 px-3 py-1.5 rounded-xl">
+                <div class="w-8 h-8 rounded-full bg-red-100 text-red-800 flex items-center justify-center font-bold text-xs">
+                    <i id="user-avatar" class="fa-solid fa-user-shield"></i>
+                </div>
+                <div class="text-left text-xs">
+                    <div id="user-name" class="font-semibold text-slate-800">Admin Biro Organisasi</div>
+                    <div id="user-role-text" class="text-slate-500 text-[11px]">Super Administrator</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTENT WRAPPER -->
+    <div class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+
+        <!-- WORKFLOW BREADCRUMB / PROCESS INDICATOR -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
+            <div class="flex items-center justify-between mb-2">
+                <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider"><i class="fa-solid fa-route text-red-700 mr-1.5"></i> Workflow Status Simulation</h3>
+                <span id="current-stage-tag" class="text-xs bg-red-100 text-red-800 px-2.5 py-0.5 rounded-full font-semibold">Tahap 1: Perencanaan & Pengaturan</span>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                <div id="flow-step-1" class="flow-step p-2.5 rounded-lg border-2 border-red-600 bg-red-50/50 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-xs">1</span>
+                    <span class="font-medium text-slate-800">1. Perencanaan Biro</span>
+                </div>
+                <div id="flow-step-2" class="flow-step p-2.5 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 opacity-60">
+                    <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs">2</span>
+                    <span class="font-medium text-slate-800">2. Input & Reviu PD</span>
+                </div>
+                <div id="flow-step-3" class="flow-step p-2.5 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 opacity-60">
+                    <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs">3</span>
+                    <span class="font-medium text-slate-800">3. Verifikasi Internal PD</span>
+                </div>
+                <div id="flow-step-4" class="flow-step p-2.5 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 opacity-60">
+                    <span class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center font-bold text-xs">4</span>
+                    <span class="font-medium text-slate-800">4. Verifikasi Akhir Biro</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICATION BANNER (DYNAMIC) -->
+        <div id="notif-banner" class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-lg shadow-sm flex items-start justify-between">
+            <div class="flex items-start space-x-3">
+                <i class="fa-solid fa-bell text-amber-600 text-lg mt-0.5"></i>
+                <div>
+                    <h4 id="notif-title" class="font-semibold text-amber-900 text-sm">Pemberitahuan Monev Active</h4>
+                    <p id="notif-body" class="text-xs text-amber-800 mt-0.5">Jadwal Monev SOP Triwulan II Tahun 2026 telah diterbitkan oleh Biro Organisasi. Batas penginputan data: <strong>30 April 2026</strong>.</p>
+                </div>
+            </div>
+            <button onclick="document.getElementById('notif-banner').classList.add('hidden')" class="text-amber-500 hover:text-amber-700">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- MAIN DASHBOARD CONTENT (ROLE DEPENDENT PANELS) -->
+
+        <!-- ============================================================== -->
+        <!-- PANEL 1: ADMIN SUPER BIRO ORGANISASI                           -->
+        <!-- ============================================================== -->
+        <div id="panel-biro" class="role-panel space-y-6">
+            
+            <!-- Executive Summary Dashboard -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">Total SOP Aktif</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mt-1" id="stat-total-sop">1,248</h3>
+                        <p class="text-[11px] text-emerald-600 font-medium mt-1"><i class="fa-solid fa-arrow-up"></i> +12% dari tahun lalu</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">SOP AP (Administrasi Pemerintahan)</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mt-1" id="stat-sop-ap">740</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">59.3% dari Total SOP</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">SOP Teknis</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mt-1" id="stat-sop-teknis">508</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">40.7% dari Total SOP</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-gears"></i>
+                    </div>
+                </div>
+
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-xs font-medium text-slate-500">PD Menginput Data</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900 mt-1" id="stat-pd-input">38 / 42</h3>
+                        <p class="text-[11px] text-emerald-600 font-medium mt-1"><i class="fa-solid fa-circle-check"></i> 90.4% Partisipasi</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Nav for Biro -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="border-b border-slate-200 bg-slate-50 px-4 flex gap-4 text-xs font-semibold">
+                    <button onclick="switchBiroTab('perencanaan')" id="tab-btn-perencanaan" class="py-3.5 border-b-2 border-red-700 text-red-700 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-plus"></i> 1. Pengaturan & Perencanaan Monev
+                    </button>
+                    <button onclick="switchBiroTab('verifikasi')" id="tab-btn-verifikasi" class="py-3.5 border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-clipboard-check"></i> 2. Verifikasi Final Biro
+                    </button>
+                    <button onclick="switchBiroTab('analytics')" id="tab-btn-analytics" class="py-3.5 border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center gap-2">
+                        <i class="fa-solid fa-chart-pie"></i> 3. Analytics & Dashboard Eksekutif
+                    </button>
+                </div>
+
+                <!-- TAB CONTENT 1: PERENCANAAN MONEV -->
+                <div id="biro-tab-perencanaan" class="p-6 space-y-6">
+                    <div class="border-b pb-4">
+                        <h2 class="text-lg font-bold text-slate-800">Form Input Jadwal & Kriteria Evaluasi Monev</h2>
+                        <p class="text-xs text-slate-500">Tahap awal: Menentukan batas waktu, indikator, dan PIC sebelum Perangkat Daerah melakukan penginputan.</p>
+                    </div>
+
+                    <form id="form-perencanaan-monev" onsubmit="handleSavePerencanaan(event)" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Judul Periode Monev</label>
+                                <input type="text" value="Monitoring dan Evaluasi SOP Triwulan II Tahun 2026" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Mulai</label>
+                                    <input type="date" value="2026-04-01" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-700 mb-1">Batas Akhir (Deadline)</label>
+                                    <input type="date" value="2026-04-30" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori Target SOP</label>
+                                <div class="flex gap-4 text-xs mt-1">
+                                    <label class="flex items-center gap-1.5 cursor-pointer">
+                                        <input type="checkbox" checked class="rounded text-red-600 focus:ring-red-500"> SOP AP (Administrasi Pemerintahan)
+                                    </label>
+                                    <label class="flex items-center gap-1.5 cursor-pointer">
+                                        <input type="checkbox" checked class="rounded text-red-600 focus:ring-red-500"> SOP Teknis
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Standar Indikator Verifikasi</label>
+                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+                                    <span><i class="fa-solid fa-list-check text-red-700 mr-2"></i> Ceklist 22 Indikator PermenPANRB No. 35/2012</span>
+                                    <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">AKTIF</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">PIC Koordinator Biro Organisasi</label>
+                                <input type="text" value="I Made Agus Wijaya, S.STP., M.Si." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">PIC Pendukung / Analis Tata Laksana</label>
+                                <input type="text" value="Ni Putu Sarah Dewi, S.E." class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan Instansi / Petunjuk Pengisian</label>
+                                <textarea rows="3" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none">Seluruh Perangkat Daerah wajib mereviu SOP menggunakan 22 Indikator serta mengunggah bukti dukung (SK Penetapan & Dokumen SOP) sebelum batas akhir.</textarea>
+                            </div>
+
+                            <div class="pt-2 flex justify-end gap-3">
+                                <button type="button" class="px-4 py-2 border border-slate-300 text-slate-700 rounded-lg text-xs hover:bg-slate-50 font-medium">Reset</button>
+                                <button type="submit" class="px-5 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold shadow flex items-center gap-2">
+                                    <i class="fa-solid fa-paper-plane"></i> Simpan & Publikasi Jadwal Monev
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- TAB CONTENT 2: VERIFIKASI BIRO ORGANISASI (VERIFIKASI AKHIR SUPER) -->
+                <div id="biro-tab-verifikasi" class="p-6 space-y-6 hidden">
+                    <div class="flex flex-wrap justify-between items-center gap-4 border-b pb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Verifikasi Super Admin Biro Organisasi</h2>
+                            <p class="text-xs text-slate-500">Mengecek data, bukti dukung SOP yang telah disetujui internal PD sebelum diintegrasikan ke Dashboard Utama.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <span class="bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-xs font-semibold">Menunggu Verifikasi Final: <strong id="cnt-pending-biro">1</strong></span>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="bg-slate-100 border-b border-slate-200 text-slate-700 uppercase">
+                                    <th class="p-3">Perangkat Daerah</th>
+                                    <th class="p-3">Judul SOP</th>
+                                    <th class="p-3">Kategori</th>
+                                    <th class="p-3">Verifikator PD</th>
+                                    <th class="p-3">Bukti Dukung</th>
+                                    <th class="p-3">Status SIM SOP</th>
+                                    <th class="p-3 text-center">Aksi Verifikasi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-biro-verifikasi-body" class="divide-y divide-slate-200">
+                                <!-- Dynamic items loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB CONTENT 3: ANALYTICS & DASHBOARD EKSEKUTIF -->
+                <div id="biro-tab-analytics" class="p-6 space-y-6 hidden">
+                    <div class="border-b pb-4">
+                        <h2 class="text-lg font-bold text-slate-800">Eksekutif Dashboard & Analitik SIM SOP Pemprov Bali</h2>
+                        <p class="text-xs text-slate-500">Ringkasan statistik hasil reviu SOP terintegrasi untuk Pimpinan / Kepala Biro Organisasi.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Chart 1: SOP Per Kategori -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-xs mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-pie text-red-700"></i> Distribusi SOP AP vs SOP Teknis
+                            </h4>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="chartSopCategory"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Chart 2: Status Penginputan Perangkat Daerah -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-slate-800 text-xs mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-chart-bar text-red-700"></i> Status Kepatuhan Penginputan PD
+                            </h4>
+                            <div class="h-64 flex justify-center items-center">
+                                <canvas id="chartPdStatus"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Table Per PD -->
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-3">Daftar Perangkat Daerah & Jumlah SOP AP/Teknis Aktif</h4>
+                        <div class="overflow-x-auto border rounded-xl">
+                            <table class="w-full text-left text-xs border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-100 text-slate-700 uppercase border-b">
+                                        <th class="p-3">No</th>
+                                        <th class="p-3">Nama Perangkat Daerah (PD)</th>
+                                        <th class="p-3 text-center">SOP AP Aktif</th>
+                                        <th class="p-3 text-center">SOP Teknis Aktif</th>
+                                        <th class="p-3 text-center">Total SOP</th>
+                                        <th class="p-3 text-center">Status Monev</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200">
+                                    <tr>
+                                        <td class="p-3 text-slate-500">1</td>
+                                        <td class="p-3 font-semibold text-slate-800">Dinas Kesehatan Pemprov Bali</td>
+                                        <td class="p-3 text-center">45</td>
+                                        <td class="p-3 text-center">32</td>
+                                        <td class="p-3 text-center font-bold">77</td>
+                                        <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Terintegrasi</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 text-slate-500">2</td>
+                                        <td class="p-3 font-semibold text-slate-800">Dinas Pendidikan, Kepemudaan dan Olahraga</td>
+                                        <td class="p-3 text-center">52</td>
+                                        <td class="p-3 text-center">18</td>
+                                        <td class="p-3 text-center font-bold">70</td>
+                                        <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Terintegrasi</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 text-slate-500">3</td>
+                                        <td class="p-3 font-semibold text-slate-800">Dinas Pekerjaan Umum dan Penataan Ruang</td>
+                                        <td class="p-3 text-center">38</td>
+                                        <td class="p-3 text-center">41</td>
+                                        <td class="p-3 text-center font-bold">79</td>
+                                        <td class="p-3 text-center"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-spinner animate-spin mr-1"></i> Menunggu Verifikasi Final</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 text-slate-500">4</td>
+                                        <td class="p-3 font-semibold text-slate-800">Badan Pengelolaan Keuangan dan Aset Daerah</td>
+                                        <td class="p-3 text-center">60</td>
+                                        <td class="p-3 text-center">12</td>
+                                        <td class="p-3 text-center font-bold">72</td>
+                                        <td class="p-3 text-center"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[11px] font-semibold"><i class="fa-solid fa-check-double mr-1"></i> Terintegrasi</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- PANEL 2: ADMIN PERANGKAT DAERAH (ADMIN PD)                     -->
+        <!-- ============================================================== -->
+        <div id="panel-pd" class="role-panel space-y-6 hidden">
+            
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-box-archive text-red-700 mr-2"></i> Modul Admin Perangkat Daerah (PD)</h2>
+                    <p class="text-xs text-slate-500">Inventarisasi SOP, Reviu dengan 22 Indikator, Upload Bukti Dukung, dan Kirim Berkas Usulan ke Verifikator PD.</p>
+                </div>
+                <button onclick="openModalAddSop()" class="px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold shadow flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Input Draft & Reviu SOP Baru
+                </button>
+            </div>
+
+            <!-- List SOP Created by PD -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b bg-slate-50 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Daftar SOP Perangkat Daerah (Dinas Kesehatan Pemprov Bali)</h3>
+                    <span class="text-xs text-slate-500">Total SOP Terdaftar: <strong id="pd-sop-count">3</strong></span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase border-b">
+                                <th class="p-3">No</th>
+                                <th class="p-3">Judul SOP</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Penetapan & Revisi</th>
+                                <th class="p-3 text-center">Hasil Checklist 22 Indikator</th>
+                                <th class="p-3">Bukti Dukung</th>
+                                <th class="p-3">Status Alur</th>
+                                <th class="p-3 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-pd-sop-body" class="divide-y divide-slate-200">
+                            <!-- Loaded Dynamically JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- PANEL 3: VERIFIKATOR PERANGKAT DAERAH (VERIFIKATOR PD / KEPALA PD) -->
+        <!-- ============================================================== -->
+        <div id="panel-verifikator_pd" class="role-panel space-y-6 hidden">
+            
+            <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-signature text-red-700 mr-2"></i> Modul Verifikator / Kepala Perangkat Daerah</h2>
+                <p class="text-xs text-slate-500">Pemeriksaan kelayakan SOP usulan internal, pemberian catatan revisi, dan Persetujuan Elektronik melalui Kantor Virtual.</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b bg-slate-50 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wide">Daftar Usulan SOP Menunggu Verifikasi Internal PD</h3>
+                    <span class="text-xs bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full font-bold">Menunggu Aksi: <span id="verif-pd-pending-count">1</span></span>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase border-b">
+                                <th class="p-3">Judul SOP</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3">Diinput Oleh</th>
+                                <th class="p-3 text-center">Skor 22 Indikator</th>
+                                <th class="p-3">Berkas & Bukti</th>
+                                <th class="p-3">Status Internal</th>
+                                <th class="p-3 text-center">Keputusan / Validasi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-verif-pd-body" class="divide-y divide-slate-200">
+                            <!-- Dynamic Content JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- PANEL 4: PENGAWAS DAERAH (INSPEKTORAT / AUDITOR - READ ONLY)   -->
+        <!-- ============================================================== -->
+        <div id="panel-pengawas" class="role-panel space-y-6 hidden">
+            
+            <!-- Alert Banner Read-Only -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl shadow-sm flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-amber-500 text-white rounded-xl flex items-center justify-center font-bold text-lg">
+                        <i class="fa-solid fa-eye"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-amber-900 text-sm flex items-center gap-2">
+                            DASHBOARD PENGAWAS DAERAH / INSPEKTORAT
+                            <span class="bg-amber-200 text-amber-900 text-[10px] uppercase font-extrabold px-2 py-0.5 rounded-full border border-amber-300">
+                                Mode Hanya Dilihat (Read-Only)
+                            </span>
+                        </h3>
+                        <p class="text-xs text-amber-800 mt-0.5">Anda berada pada mode pengawasan. Anda dapat melihat seluruh input data SOP, status verifikasi, dokumen lampiran, dan checklist 22 indikator tanpa hak akses pengeditan.</p>
+                    </div>
+                </div>
+                <button onclick="exportAuditReport()" class="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-amber-800 hover:bg-amber-900 text-white rounded-lg text-xs font-bold shadow">
+                    <i class="fa-solid fa-file-export"></i> Cetak Laporan Audit
+                </button>
+            </div>
+
+            <!-- Metric Cards for Pengawas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-500">Total SOP Terdaftar</span>
+                        <i class="fa-solid fa-database text-blue-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 mt-2" id="pengawas-stat-total">1,248</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">Tersebar di 42 Perangkat Daerah</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-500">Telah Terintegrasi</span>
+                        <i class="fa-solid fa-circle-check text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-emerald-700 mt-2" id="pengawas-stat-terintegrasi">1,180</h3>
+                    <p class="text-[11px] text-emerald-600 font-medium mt-1">94.5% Kepatuhan Formal</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-500">Proses Verifikasi</span>
+                        <i class="fa-solid fa-spinner text-amber-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-amber-700 mt-2" id="pengawas-stat-pending">48</h3>
+                    <p class="text-[11px] text-amber-600 font-medium mt-1">Verifikasi internal & Biro</p>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-500">Rata-rata Skor 22 Indikator</span>
+                        <i class="fa-solid fa-star text-amber-500"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-900 mt-2">21.4 <span class="text-xs text-slate-400 font-normal">/ 22</span></h3>
+                    <p class="text-[11px] text-emerald-600 font-medium mt-1">Sangat Memenuhi Standar</p>
+                </div>
+            </div>
+
+            <!-- Main Data Table for Pengawas -->
+            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div class="p-4 border-b bg-slate-50 flex flex-wrap gap-3 justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-list text-red-700"></i> Data Seluruh Hasil Input SOP Pemprov Bali
+                        </h3>
+                        <p class="text-[11px] text-slate-500">Gunakan filter untuk meninjau detail penginputan oleh masing-masing Perangkat Daerah.</p>
+                    </div>
+
+                    <!-- Search and Filter Controls -->
+                    <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+                        <div class="relative flex-1 sm:w-48">
+                            <input type="text" id="pengawas-search" oninput="filterPengawasData()" placeholder="Cari SOP / Perangkat Daerah..." class="w-full pl-8 pr-3 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+                        </div>
+                        <select id="pengawas-filter-kategori" onchange="filterPengawasData()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="ALL">Semua Kategori</option>
+                            <option value="SOP AP">SOP AP</option>
+                            <option value="SOP Teknis">SOP Teknis</option>
+                        </select>
+                        <select id="pengawas-filter-status" onchange="filterPengawasData()" class="px-2.5 py-1.5 border border-slate-300 rounded-lg text-xs focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                            <option value="ALL">Semua Status</option>
+                            <option value="TERINTEGRASI">Terintegrasi</option>
+                            <option value="DISETUJUI_PD">Disetujui PD</option>
+                            <option value="DIKIRIM_KE_VERIFIKATOR_PD">Menunggu PD</option>
+                            <option value="DRAFT">Draft</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Table Content -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs border-collapse">
+                        <thead>
+                            <tr class="bg-slate-100 text-slate-700 uppercase border-b">
+                                <th class="p-3">No</th>
+                                <th class="p-3">Perangkat Daerah</th>
+                                <th class="p-3">Judul SOP & No. Dokumen</th>
+                                <th class="p-3">Kategori</th>
+                                <th class="p-3 text-center">Tgl Penetapan</th>
+                                <th class="p-3 text-center">Checklist 22 Indikator</th>
+                                <th class="p-3">Bukti Dukung</th>
+                                <th class="p-3">Status Terakhir</th>
+                                <th class="p-3 text-center">Rincian</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-pengawas-body" class="divide-y divide-slate-200">
+                            <!-- JS Dynamic Content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-6 text-xs mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center space-x-2">
+                <span class="font-bold text-white">Biro Organisasi Setda Provinsi Bali</span>
+                <span>&copy; 2026. All Rights Reserved.</span>
+            </div>
+            <div class="flex space-x-4 text-slate-500">
+                <a href="#" class="hover:text-slate-300">PermenPANRB No. 35/2012</a>
+                <span>•</span>
+                <a href="#" class="hover:text-slate-300">Panduan SIM SOP</a>
+                <span>•</span>
+                <a href="#" class="hover:text-slate-300">Helpdesk SIM SOP</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 1: INPUT / REVIU SOP BARU (ADMIN PD)                     -->
+    <!-- ============================================================== -->
+    <div id="modal-sop" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl max-h-[90vh] flex flex-col overflow-hidden border border-slate-200 animate-in fade-in zoom-in duration-200">
+            <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-file-pen text-amber-400 text-lg"></i>
+                    <h3 class="font-bold text-sm">Form Inventaris & Reviu Checklist 22 Indikator SOP</h3>
+                </div>
+                <button onclick="closeModalAddSop()" class="text-slate-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <form id="form-sop-pd" onsubmit="handleSaveSopPd(event)" class="flex-grow overflow-y-auto p-6 space-y-6">
+                <!-- Step 1: Identity SOP -->
+                <div>
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide border-b pb-2 mb-3 text-red-700">1. Data Identity SOP</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Judul SOP <span class="text-red-500">*</span></label>
+                            <input type="text" id="sop-title" placeholder="Contoh: SOP Pelayanan Perizinan Tenaga Kesehatan" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori SOP <span class="text-red-500">*</span></label>
+                            <select id="sop-category" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                <option value="SOP AP">SOP AP (Administrasi Pemerintahan)</option>
+                                <option value="SOP Teknis">SOP Teknis</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Nomor Dokumen SOP</label>
+                            <input type="text" id="sop-doc-num" placeholder="060/123/SOP/DINKES/2026" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Penetapan</label>
+                            <input type="date" id="sop-date-penetapan" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Revisi Terakhir</label>
+                            <input type="date" id="sop-date-revisi" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Checklist 22 Indikator PermenPANRB -->
+                <div>
+                    <div class="flex justify-between items-center border-b pb-2 mb-3">
+                        <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide text-red-700">2. Reviu Checklist 22 Indikator (PermenPANRB No. 35/2012)</h4>
+                        <button type="button" onclick="checkAllIndikator()" class="text-[11px] text-blue-600 hover:underline font-semibold"><i class="fa-solid fa-check-double"></i> Pilih Semua Terpenuhi</button>
+                    </div>
+                    <p class="text-xs text-slate-500 mb-3">Tandai elemen yang telah dipenuhi dalam standar dokumen SOP Anda:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-200 max-h-48 overflow-y-auto" id="indikator-container">
+                        <!-- Indikators checkboxes inserted dynamically by JS -->
+                    </div>
+                </div>
+
+                <!-- Step 3: Bukti Dukung Upload -->
+                <div>
+                    <h4 class="font-bold text-slate-800 text-xs uppercase tracking-wide border-b pb-2 mb-3 text-red-700">3. Upload Bukti Dukung (PDF)</h4>
+                    <div class="border-2 border-dashed border-slate-300 rounded-xl p-4 text-center hover:bg-slate-50 transition cursor-pointer">
+                        <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-1"></i>
+                        <p class="text-xs font-medium text-slate-700">Klik atau seret berkas PDF SOP & SK Penetapan di sini</p>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Format .pdf maksimal 10MB</p>
+                        <label class="block text-xs font-semibold text-slate-700 mb-1">Perangkat Daerah Pengusul <span class="text-red-500">*</span></label>
+                    <input type="text" id="sop-pd-name" placeholder="Nama perangkat daerah pengusul" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Bukti Dukung SOP (PDF) <span class="text-red-500">*</span></label>
+                    <input type="file" id="sop-file-input" accept=".pdf,application/pdf" class="w-full px-3 py-2 border border-slate-300 rounded-lg text-xs" required>
+                    </div>
+                    <div class="mt-2 text-xs text-slate-600 flex items-center gap-2">
+                        <i class="fa-solid fa-paperclip text-slate-400"></i> File Terlampir: <span class="font-semibold text-slate-800" id="attached-file-name">Dokumen_SOP_Dinkes_2026.pdf</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 border-t flex justify-end gap-3">
+                    <button type="button" onclick="closeModalAddSop()" class="px-4 py-2 border text-slate-600 rounded-lg text-xs hover:bg-slate-50 font-medium">Batal</button>
+                    <button type="submit" class="px-5 py-2 bg-red-700 hover:bg-red-800 text-white rounded-lg text-xs font-bold shadow flex items-center gap-1.5">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan Draf & File
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 2: CATATAN REVISI / DIVERIFIKASI (VERIFIKATOR PD & BIRO) -->
+    <!-- ============================================================== -->
+    <div id="modal-revisi" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden border border-slate-200">
+            <div class="bg-red-900 text-white px-5 py-3.5 flex justify-between items-center">
+                <h3 class="font-bold text-xs"><i class="fa-solid fa-triangle-exclamation text-amber-400 mr-2"></i> Form Catatan Revisi SOP</h3>
+                <button onclick="closeModalRevisi()" class="text-slate-300 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-5 space-y-4">
+                <p class="text-xs text-slate-600">Berikan instruksi revisi spesifik kepada Admin PD agar dapat diperbaiki dan dikirim ulang:</p>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 mb-1">Catatan Kekurangan / Indikator Belum Sesuai</label>
+                    <textarea id="revisi-text-input" rows="4" class="w-full px-3 py-2 border rounded-lg text-xs focus:ring-2 focus:ring-red-500 focus:outline-none" placeholder="Contoh: Bukti dukung SK belum ditandatangani, flowchart belum memenuhi PermenPANRB 35/2012..."></textarea>
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button onclick="closeModalRevisi()" class="px-3 py-1.5 border text-slate-600 rounded-lg text-xs font-medium">Batal</button>
+                    <button onclick="submitRevisiProcess()" class="px-4 py-1.5 bg-red-700 text-white rounded-lg text-xs font-bold shadow"><i class="fa-solid fa-paper-plane mr-1"></i> Kirim Revisi ke Admin PD</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODAL 3: VIEW DETAIL SOP (KHUSUS READ-ONLY PENGAWAS)           -->
+    <!-- ============================================================== -->
+    <div id="modal-detail-pengawas" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden border border-slate-200 flex flex-col max-h-[85vh]">
+            <div class="bg-slate-900 text-white px-5 py-4 flex justify-between items-center border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-file-magnifying-glass text-amber-400"></i>
+                    <h3 class="font-bold text-xs uppercase tracking-wide">Rincian Dokumen SOP (Mode Audit Read-Only)</h3>
+                </div>
+                <button onclick="closeModalDetailPengawas()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-4 text-xs" id="detail-pengawas-content">
+                <!-- JS Rendered Details -->
+            </div>
+            <div class="bg-slate-50 p-4 border-t flex justify-between items-center text-xs">
+                <span class="text-slate-500 italic"><i class="fa-solid fa-shield-halved text-amber-600"></i> Mode Hanya Lihat untuk Pengawas Daerah</span>
+                <button onclick="closeModalDetailPengawas()" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-lg">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        // Data State Management
+        let currentRole = 'biro'; // 'biro', 'pd', 'verifikator_pd', 'pengawas'
+        let currentBiroTab = 'perencanaan';
+        let activeRevisiSopId = null;
+        let activeRevisiRole = null;
+        let isLoggedIn = false;
+
+        // Sample SOP Master Data
+        let sopDataList = [
+            {
+                id: 1,
+                judul: "SOP Pelayanan Perizinan Tenaga Kesehatan (STR/SIP)",
+                kategori: "SOP AP",
+                docNum: "800/012/SOP/DINKES/2026",
+                tanggalPenetapan: "2026-01-15",
+                tanggalRevisi: "2026-03-10",
+                pdName: "Dinas Kesehatan Pemprov Bali",
+                buktiDukung: "SK_Kadin_Perizinan_STR.pdf",
+                indikatorScore: 22,
+                status: "TERINTEGRASI",
+                catatanRevisi: ""
+            },
+            {
+                id: 2,
+                judul: "SOP Penanganan Kegawatdaruratan Bencana Kesehatan",
+                kategori: "SOP Teknis",
+                docNum: "440/088/SOP/DINKES/2026",
+                tanggalPenetapan: "2026-02-01",
+                tanggalRevisi: "-",
+                pdName: "Dinas Kesehatan Pemprov Bali",
+                buktiDukung: "Dokumen_Teknis_Darurat_Bali.pdf",
+                indikatorScore: 20,
+                status: "DIKIRIM_KE_VERIFIKATOR_PD",
+                catatanRevisi: ""
+            },
+            {
+                id: 3,
+                judul: "SOP Pengadaan Obat dan Perbekalan Kesehatan",
+                kategori: "SOP AP",
+                docNum: "027/045/SOP/DINKES/2026",
+                tanggalPenetapan: "2026-02-20",
+                tanggalRevisi: "-",
+                pdName: "Dinas Kesehatan Pemprov Bali",
+                buktiDukung: "SOP_Pengadaan_Obat_2026.pdf",
+                indikatorScore: 22,
+                status: "DISETUJUI_PD",
+                catatanRevisi: ""
+            },
+            {
+                id: 4,
+                judul: "SOP Penerimaan Peserta Didik Baru (PPDB)",
+                kategori: "SOP AP",
+                docNum: "420/011/SOP/DISDIK/2026",
+                tanggalPenetapan: "2026-01-10",
+                tanggalRevisi: "-",
+                pdName: "Dinas Pendidikan, Kepemudaan dan Olahraga",
+                buktiDukung: "SK_Kadisdik_PPDB_2026.pdf",
+                indikatorScore: 22,
+                status: "TERINTEGRASI",
+                catatanRevisi: ""
+            },
+            {
+                id: 5,
+                judul: "SOP Pemeliharaan Rutin Jalan dan Jembatan Provinsi",
+                kategori: "SOP Teknis",
+                docNum: "600/105/SOP/PUPR/2026",
+                tanggalPenetapan: "2026-02-14",
+                tanggalRevisi: "-",
+                pdName: "Dinas Pekerjaan Umum dan Penataan Ruang",
+                buktiDukung: "Jalan_Jembatan_PUPR_2026.pdf",
+                indikatorScore: 21,
+                status: "DISETUJUI_PD",
+                catatanRevisi: ""
+            }
+        ];
+
+        // 22 Indikator PermenPANRB 35/2012
+        const indikatorList = [
+            "1. Identitas SOP lengkap (Header/Footer)",
+            "2. Nomor SOP sesuai kualifikasi",
+            "3. Tanggal Pembuatan tercantum",
+            "4. Tanggal Revisi tercantum",
+            "5. Tanggal Efektif tercantum",
+            "6. Disahkan oleh Pejabat Berwenang",
+            "7. Judul SOP menggambarkan aktivitas",
+            "8. Dasaran Hukum lengkap",
+            "9. Kualifikasi Pelaksana jelas",
+            "10. Keterkaitan dengan SOP lain",
+            "11. Peralatan & Perlengkapan terurai",
+            "12. Peringatan dampak risiko ada",
+            "13. Pencatatan dan Pendataan jelas",
+            "14. Flowchart menggunakan simbol baku",
+            "15. Aktor/Pelaksana teridentifikasi",
+            "16. Mutu Baku: Persyaratan waktu",
+            "17. Mutu Baku: Kelengkapan berkas",
+            "18. Mutu Baku: Output jelas",
+            "19. Bahasa lugas & komunikatif",
+            "20. Tidak ada urutan langkah terputus",
+            "21. Kesesuaian dengan tugas fungsi",
+            "22. Terdistribusi ke seluruh pelaksana"
+        ];
+
+        // Initialize App
+        window.onload = function() {
+            renderIndikatorCheckboxes();
+            renderTables();
+            initCharts();
+            updateWorkflowIndicators();
+        };
+
+        // Quick Fill Helper for Login
+        function quickFill(user, pass) {
+            document.getElementById('login-username').value = user;
+            document.getElementById('login-password').value = pass;
+        }
+
+        // Handle Login Submission
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const u=document.getElementById('login-username').value.trim();
+            const p=document.getElementById('login-password').value;
+            const errBox=document.getElementById('login-error');
+            errBox.classList.remove('hidden'); document.getElementById('login-error-msg').textContent='Memeriksa akun Supabase…';
+            try {
+                const a=await window.ORTIBALI_BACKEND.authLogin(u,p,'tatalaksana');
+                switchRole('biro'); sessionStorage.setItem('ortibaliLoginUser',u); sessionStorage.setItem('ortibaliLoginModule',a.bidang);
+                const roleText=document.getElementById('user-role-text'); if(roleText) roleText.textContent=a.role==='master'?'Master Admin · Seluruh Bidang':'Admin · Tatalaksana';
+                errBox.classList.add('hidden'); document.getElementById('login-modal').classList.add('hidden'); isLoggedIn=true;
+            } catch(err) { document.getElementById('login-error-msg').textContent=err.message||'Login gagal.'; }
+        }
+
+        async function handleLogout() {
+            try { await window.ORTIBALI_BACKEND.logout(); } catch(err) { console.error(err); }
+            isLoggedIn=false; sessionStorage.removeItem('ortibaliLoginUser'); sessionStorage.removeItem('ortibaliLoginModule'); location.reload();
+        }
+
+        // Switch Simulator Roles
+        function switchRole(role) {
+            currentRole = role;
+
+            // Highlight buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.className = 'role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700';
+            });
+            document.getElementById(`btn-role-${role}`).className = 'role-btn px-3 py-1.5 rounded-lg transition font-medium flex items-center gap-1.5 bg-red-700 text-white shadow-sm';
+
+            // Hide/Show Panels
+            document.querySelectorAll('.role-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(`panel-${role}`).classList.remove('hidden');
+
+            // Update Badge Info
+            const nameEl = document.getElementById('user-name');
+            const roleEl = document.getElementById('user-role-text');
+            const avatarEl = document.getElementById('user-avatar');
+
+            if (role === 'biro') {
+                nameEl.textContent = 'Admin Super Biro Organisasi';
+                roleEl.textContent = 'Super Administrator Pemprov Bali';
+                avatarEl.className = 'fa-solid fa-user-shield';
+            } else if (role === 'pd') {
+                nameEl.textContent = 'Admin Perangkat Daerah (PD)';
+                roleEl.textContent = 'Dinas Kesehatan Pemprov Bali';
+                avatarEl.className = 'fa-solid fa-building-user';
+            } else if (role === 'verifikator_pd') {
+                nameEl.textContent = 'Verifikator PD / Kepala PD';
+                roleEl.textContent = 'Kepala Dinas Kesehatan';
+                avatarEl.className = 'fa-solid fa-file-circle-check';
+            } else if (role === 'pengawas') {
+                nameEl.textContent = 'Inspektorat Daerah / Pengawas';
+                roleEl.textContent = 'Pengawas Daerah (Read-Only Mode)';
+                avatarEl.className = 'fa-solid fa-eye text-amber-500';
+            }
+
+            updateWorkflowIndicators();
+            if (role === 'pengawas') renderPengawasTable();
+        }
+
+        // Switch Biro Sub-Tabs
+        function switchBiroTab(tab) {
+            currentBiroTab = tab;
+            ['perencanaan', 'verifikasi', 'analytics'].forEach(t => {
+                document.getElementById(`biro-tab-${t}`).classList.add('hidden');
+                document.getElementById(`tab-btn-${t}`).className = 'py-3.5 border-b-2 border-transparent text-slate-600 hover:text-slate-900 flex items-center gap-2';
+            });
+
+            document.getElementById(`biro-tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tab}`).className = 'py-3.5 border-b-2 border-red-700 text-red-700 flex items-center gap-2 font-bold';
+        }
+
+        // Render Checkbox 22 Indikator
+        function renderIndikatorCheckboxes() {
+            const container = document.getElementById('indikator-container');
+            container.innerHTML = '';
+            indikatorList.forEach((ind, index) => {
+                const item = document.createElement('label');
+                item.className = 'flex items-center gap-2 p-1.5 bg-white rounded border hover:bg-slate-100 cursor-pointer text-[11px]';
+                item.innerHTML = `
+                    <input type="checkbox" name="indikator" value="${index+1}" checked class="rounded text-red-600 focus:ring-red-500 ind-checkbox">
+                    <span class="text-slate-700">${ind}</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function checkAllIndikator() {
+            document.querySelectorAll('.ind-checkbox').forEach(cb => cb.checked = true);
+        }
+
+        // Render Dynamic Tables
+        function renderTables() {
+            renderPdTable();
+            renderVerifPdTable();
+            renderBiroVerifTable();
+            renderPengawasTable();
+            updateStatsCounts();
+        }
+
+        // 1. Table Admin PD
+        function renderPdTable() {
+            const tbody = document.getElementById('table-pd-sop-body');
+            tbody.innerHTML = '';
+
+            sopDataList.forEach((sop, index) => {
+                let statusBadge = getStatusBadgeHtml(sop.status);
+                let actionBtn = '';
+
+                if (sop.status === 'DRAFT' || sop.status === 'REVISI_INTERNAL_PD' || sop.status === 'REVISI_BIRO') {
+                    actionBtn = `
+                        <button onclick="sendToVerifikatorPd(${sop.id})" class="px-2.5 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1">
+                            <i class="fa-solid fa-paper-plane"></i> Kirim Usulan
+                        </button>
+                    `;
+                } else {
+                    actionBtn = `<span class="text-slate-400 italic text-[11px]">Telah Dikirim</span>`;
+                }
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-500 font-medium">${index+1}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-slate-800">${sop.judul}</div>
+                        <div class="text-[10px] text-slate-500">No: ${sop.docNum}</div>
+                        ${sop.catatanRevisi ? `<div class="mt-1 p-1.5 bg-red-50 border border-red-200 text-red-700 text-[10px] rounded"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <strong>Catatan Revisi:</strong> ${sop.catatanRevisi}</div>` : ''}
+                    </td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-semibold">${sop.kategori}</span></td>
+                    <td class="p-3 text-[11px]">
+                        <div>Met: <strong>${sop.tanggalPenetapan}</strong></div>
+                        <div class="text-slate-400">Rev: ${sop.tanggalRevisi}</div>
+                    </td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[11px]"><i class="fa-solid fa-square-check mr-1"></i> ${sop.indikatorScore} / 22</span>
+                    </td>
+                    <td class="p-3">
+                        <a href="#" class="text-red-700 hover:underline flex items-center gap-1 font-semibold text-[11px]">
+                            <i class="fa-solid fa-file-pdf"></i> ${sop.buktiDukung}
+                        </a>
+                    </td>
+                    <td class="p-3">${statusBadge}</td>
+                    <td class="p-3 text-center">${actionBtn}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('pd-sop-count').textContent = sopDataList.length;
+        }
+
+        // 2. Table Verifikator Internal PD
+        function renderVerifPdTable() {
+            const tbody = document.getElementById('table-verif-pd-body');
+            tbody.innerHTML = '';
+
+            let filtered = sopDataList.filter(s => s.status === 'DIKIRIM_KE_VERIFIKATOR_PD' || s.status === 'DISETUJUI_PD' || s.status === 'REVISI_INTERNAL_PD');
+            document.getElementById('verif-pd-pending-count').textContent = filtered.filter(s => s.status === 'DIKIRIM_KE_VERIFIKATOR_PD').length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-400 italic">Tidak ada usulan SOP pending.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach(sop => {
+                let actions = '';
+
+                if (sop.status === 'DIKIRIM_KE_VERIFIKATOR_PD') {
+                    actions = `
+                        <div class="flex justify-center gap-1.5">
+                            <button onclick="approveVerifikatorPd(${sop.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-check"></i> Validasi & Setujui
+                            </button>
+                            <button onclick="openModalRevisi(${sop.id}, 'pd')" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-xmark"></i> Revisi
+                            </button>
+                        </div>
+                    `;
+                } else if (sop.status === 'DISETUJUI_PD') {
+                    actions = `<span class="text-emerald-600 font-bold text-[11px]"><i class="fa-solid fa-file-signature"></i> Disetujui (Virtual Office)</span>`;
+                } else {
+                    actions = `<span class="text-amber-600 font-medium text-[11px]">Menunggu Perbaikan Admin PD</span>`;
+                }
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-3 font-bold text-slate-800">${sop.judul}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-semibold">${sop.kategori}</span></td>
+                    <td class="p-3 text-slate-600">${sop.pdName}</td>
+                    <td class="p-3 text-center font-bold text-slate-700">${sop.indikatorScore} / 22</td>
+                    <td class="p-3"><a href="#" class="text-red-700 hover:underline text-[11px]"><i class="fa-solid fa-file-pdf"></i> ${sop.buktiDukung}</a></td>
+                    <td class="p-3">${getStatusBadgeHtml(sop.status)}</td>
+                    <td class="p-3 text-center">${actions}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 3. Table Super Admin Biro Verifikasi Final
+        function renderBiroVerifTable() {
+            const tbody = document.getElementById('table-biro-verifikasi-body');
+            tbody.innerHTML = '';
+
+            let filtered = sopDataList.filter(s => s.status === 'DISETUJUI_PD' || s.status === 'TERINTEGRASI' || s.status === 'REVISI_BIRO');
+            document.getElementById('cnt-pending-biro').textContent = filtered.filter(s => s.status === 'DISETUJUI_PD').length;
+
+            filtered.forEach(sop => {
+                let actions = '';
+
+                if (sop.status === 'DISETUJUI_PD') {
+                    actions = `
+                        <div class="flex justify-center gap-1.5">
+                            <button onclick="approveBiroFinal(${sop.id})" class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Disetujui & Integrasi
+                            </button>
+                            <button onclick="openModalRevisi(${sop.id}, 'biro')" class="px-2.5 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left"></i> Tolak / Revisi
+                            </button>
+                        </div>
+                    `;
+                } else if (sop.status === 'TERINTEGRASI') {
+                    actions = `<span class="text-emerald-700 font-bold text-[11px]"><i class="fa-solid fa-check-double"></i> Terintegrasi Dashboard</span>`;
+                } else {
+                    actions = `<span class="text-amber-600 font-medium text-[11px]">Revisi Biro Terkirim</span>`;
+                }
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-800">${sop.pdName}</td>
+                    <td class="p-3 font-bold text-slate-800">${sop.judul}</td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-semibold">${sop.kategori}</span></td>
+                    <td class="p-3 text-slate-600"><i class="fa-solid fa-user-check text-emerald-600 mr-1"></i> Terverifikasi PD</td>
+                    <td class="p-3"><a href="#" class="text-red-700 hover:underline text-[11px]"><i class="fa-solid fa-file-pdf"></i> ${sop.buktiDukung}</a></td>
+                    <td class="p-3">${getStatusBadgeHtml(sop.status)}</td>
+                    <td class="p-3 text-center">${actions}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // 4. Table Pengawas Daerah (READ-ONLY VIEW ALL)
+        function renderPengawasTable() {
+            const tbody = document.getElementById('table-pengawas-body');
+            tbody.innerHTML = '';
+
+            const query = (document.getElementById('pengawas-search')?.value || '').toLowerCase();
+            const catFilter = document.getElementById('pengawas-filter-kategori')?.value || 'ALL';
+            const statFilter = document.getElementById('pengawas-filter-status')?.value || 'ALL';
+
+            let filtered = sopDataList.filter(sop => {
+                const matchSearch = sop.judul.toLowerCase().includes(query) || sop.pdName.toLowerCase().includes(query) || sop.docNum.toLowerCase().includes(query);
+                const matchCat = (catFilter === 'ALL') || (sop.kategori === catFilter);
+                const matchStat = (statFilter === 'ALL') || (sop.status === statFilter);
+                return matchSearch && matchCat && matchStat;
+            });
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" class="p-4 text-center text-slate-400 italic">Tidak ada data SOP ditemukan.</td></tr>`;
+                return;
+            }
+
+            filtered.forEach((sop, idx) => {
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50";
+                tr.innerHTML = `
+                    <td class="p-3 text-slate-500 font-medium">${idx+1}</td>
+                    <td class="p-3 font-semibold text-slate-800">${sop.pdName}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-slate-800">${sop.judul}</div>
+                        <div class="text-[10px] text-slate-500">No: ${sop.docNum}</div>
+                    </td>
+                    <td class="p-3"><span class="px-2 py-0.5 bg-slate-100 text-slate-700 rounded text-[10px] font-semibold">${sop.kategori}</span></td>
+                    <td class="p-3 text-center font-mono text-[11px]">${sop.tanggalPenetapan}</td>
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[11px]"><i class="fa-solid fa-square-check mr-1"></i> ${sop.indikatorScore} / 22</span>
+                    </td>
+                    <td class="p-3">
+                        <a href="#" onclick="alert('Membuka pratinjau dokumen PDF (Read-Only Mode)')" class="text-red-700 hover:underline flex items-center gap-1 font-semibold text-[11px]">
+                            <i class="fa-solid fa-file-pdf"></i> ${sop.buktiDukung}
+                        </a>
+                    </td>
+                    <td class="p-3">${getStatusBadgeHtml(sop.status)}</td>
+                    <td class="p-3 text-center">
+                        <button onclick="openModalDetailPengawas(${sop.id})" class="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white rounded text-[11px] font-bold shadow flex items-center gap-1 mx-auto">
+                            <i class="fa-solid fa-eye"></i> Detail Reviu
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterPengawasData() {
+            renderPengawasTable();
+        }
+
+        function openModalDetailPengawas(id) {
+            const sop = sopDataList.find(s => s.id === id);
+            if (!sop) return;
+
+            const content = document.getElementById('detail-pengawas-content');
+            content.innerHTML = `
+                <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-amber-900 font-medium text-[11px] flex items-center gap-2">
+                    <i class="fa-solid fa-lock text-amber-700"></i> Mode Pengawasan Read-Only: Seluruh data di bawah ini bersumber dari input instansi terkait.
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 border-b pb-3">
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Perangkat Daerah</div>
+                        <div class="font-bold text-slate-800 text-sm">${sop.pdName}</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Kategori SOP</div>
+                        <div class="font-semibold text-slate-800">${sop.kategori}</div>
+                    </div>
+                    <div class="col-span-2">
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Judul Dokumen SOP</div>
+                        <div class="font-bold text-slate-900 text-sm">${sop.judul}</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Nomor Dokumen</div>
+                        <div class="font-mono text-slate-800">${sop.docNum}</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Tanggal Penetapan & Revisi</div>
+                        <div class="text-slate-800">Penetapan: ${sop.tanggalPenetapan} | Revisi: ${sop.tanggalRevisi}</div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-bold text-slate-800 uppercase tracking-wide text-[11px] mb-2 flex items-center justify-between">
+                        <span>Checklist 22 Indikator Evaluasi (PermenPANRB 35/2012)</span>
+                        <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">${sop.indikatorScore} Terpenuhi</span>
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-1.5 bg-slate-50 p-3 rounded-lg border border-slate-200 max-h-40 overflow-y-auto">
+                        ${indikatorList.map((ind, i) => `
+                            <div class="flex items-center gap-1.5 text-[10px]">
+                                <i class="fa-solid fa-check text-emerald-600 font-bold"></i>
+                                <span class="text-slate-700">${ind}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <div class="border-t pt-3 flex items-center justify-between">
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold">Berkas Bukti Dukung (SK & PDF)</div>
+                        <div class="font-semibold text-red-700 flex items-center gap-1 mt-0.5"><i class="fa-solid fa-file-pdf"></i> ${sop.buktiDukung}</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] text-slate-400 uppercase font-bold text-right">Status Akhir Ingetrasi</div>
+                        <div class="mt-0.5">${getStatusBadgeHtml(sop.status)}</div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal-detail-pengawas').classList.remove('hidden');
+        }
+
+        function closeModalDetailPengawas() {
+            document.getElementById('modal-detail-pengawas').classList.add('hidden');
+        }
+
+        function exportAuditReport() {
+            alert("Mencetak Laporan Hasil Pengawasan SIM SOP Pemprov Bali dalam format PDF / Excel ringkasan audit.");
+        }
+
+        // Helper Badge Renderer
+        function getStatusBadgeHtml(status) {
+            switch (status) {
+                case 'DRAFT':
+                    return `<span class="bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold">Draf Simpan</span>`;
+                case 'DIKIRIM_KE_VERIFIKATOR_PD':
+                    return `<span class="bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-clock"></i> Menunggu Verifikasi PD</span>`;
+                case 'REVISI_INTERNAL_PD':
+                    return `<span class="bg-red-100 text-red-800 border border-red-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-circle-exclamation"></i> Catatan Revisi PD</span>`;
+                case 'DISETUJUI_PD':
+                    return `<span class="bg-blue-100 text-blue-800 border border-blue-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-thumbs-up"></i> Disetujui PD (Proses Biro)</span>`;
+                case 'REVISI_BIRO':
+                    return `<span class="bg-orange-100 text-orange-800 border border-orange-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-rotate-left"></i> Perbaikan dari Biro</span>`;
+                case 'TERINTEGRASI':
+                    return `<span class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 rounded-full text-[10px] font-bold"><i class="fa-solid fa-shield-check"></i> Terintegrasi Dashboard</span>`;
+                default:
+                    return `<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px]">${status}</span>`;
+            }
+        }
+
+        // Update Step Bar Visuals based on workflow progress
+        function updateWorkflowIndicators() {
+            document.querySelectorAll('.flow-step').forEach((el, idx) => {
+                el.className = "flow-step p-2.5 rounded-lg border border-slate-200 bg-slate-50 flex items-center gap-2 opacity-60";
+            });
+
+            if (currentRole === 'biro') {
+                document.getElementById('flow-step-1').className = "flow-step p-2.5 rounded-lg border-2 border-red-600 bg-red-50 flex items-center gap-2 shadow-sm opacity-100";
+                document.getElementById('flow-step-4').className = "flow-step p-2.5 rounded-lg border-2 border-emerald-600 bg-emerald-50 flex items-center gap-2 shadow-sm opacity-100";
+                document.getElementById('current-stage-tag').textContent = "Role: Super Admin Biro Organisasi";
+            } else if (currentRole === 'pd') {
+                document.getElementById('flow-step-2').className = "flow-step p-2.5 rounded-lg border-2 border-red-600 bg-red-50 flex items-center gap-2 shadow-sm opacity-100";
+                document.getElementById('current-stage-tag').textContent = "Role: Admin Perangkat Daerah (PD)";
+            } else if (currentRole === 'verifikator_pd') {
+                document.getElementById('flow-step-3').className = "flow-step p-2.5 rounded-lg border-2 border-red-600 bg-red-50 flex items-center gap-2 shadow-sm opacity-100";
+                document.getElementById('current-stage-tag').textContent = "Role: Verifikator / Kepala Perangkat Daerah";
+            } else if (currentRole === 'pengawas') {
+                document.getElementById('flow-step-1').className = "flow-step p-2.5 rounded-lg border border-amber-400 bg-amber-50 flex items-center gap-2 opacity-100";
+                document.getElementById('flow-step-2').className = "flow-step p-2.5 rounded-lg border border-amber-400 bg-amber-50 flex items-center gap-2 opacity-100";
+                document.getElementById('flow-step-3').className = "flow-step p-2.5 rounded-lg border border-amber-400 bg-amber-50 flex items-center gap-2 opacity-100";
+                document.getElementById('flow-step-4').className = "flow-step p-2.5 rounded-lg border border-amber-400 bg-amber-50 flex items-center gap-2 opacity-100";
+                document.getElementById('current-stage-tag').textContent = "Role: Pengawas Daerah (Monitoring Mode)";
+            }
+        }
+
+        // Action Handlers
+        function handleSavePerencanaan(e) {
+            e.preventDefault();
+            alert("Jadwal Monev & Kriteria Evaluasi berhasil disimpan dan dipublikasikan! Notifikasi diteruskan ke seluruh Admin Perangkat Daerah.");
+            switchRole('pd');
+        }
+
+        function openModalAddSop() {
+            document.getElementById('modal-sop').classList.remove('hidden');
+        }
+
+        function closeModalAddSop() {
+            document.getElementById('modal-sop').classList.add('hidden');
+        }
+
+        function handleSaveSopPd(e) {
+            e.preventDefault();
+            const title = document.getElementById('sop-title').value;
+            const category = document.getElementById('sop-category').value;
+            const docNum = document.getElementById('sop-doc-num').value.trim();
+            const pdName = document.getElementById('sop-pd-name').value.trim();
+            const evidenceFile = document.getElementById('sop-file-input').files[0];
+            if (!pdName || !evidenceFile) { alert('Lengkapi perangkat daerah dan unggah bukti dukung PDF.'); return; }
+            if (!/\.pdf$/i.test(evidenceFile.name) || evidenceFile.size > 10 * 1024 * 1024) { alert('Bukti dukung harus berupa PDF dengan ukuran maksimal 10 MB.'); return; }
+            const penetapan = document.getElementById('sop-date-penetapan').value;
+            const revisi = document.getElementById('sop-date-revisi').value || '-';
+
+            const checkedCount = document.querySelectorAll('.ind-checkbox:checked').length;
+
+            const newSop = {
+                id: Date.now(),
+                judul: title,
+                kategori: category,
+                docNum: docNum,
+                tanggalPenetapan: penetapan,
+                tanggalRevisi: revisi,
+                pdName: pdName,
+                buktiDukung: evidenceFile.name,
+                indikatorScore: checkedCount,
+                status: "DRAFT",
+                catatanRevisi: ""
+            };
+
+            sopDataList.unshift(newSop);
+            renderTables();
+            closeModalAddSop();
+            alert("Draft SOP dan Bukti Dukung berhasil disimpan!");
+        }
+
+        function sendToVerifikatorPd(id) {
+            let item = sopDataList.find(s => s.id === id);
+            if (item) {
+                item.status = 'DIKIRIM_KE_VERIFIKATOR_PD';
+                renderTables();
+                alert(`Berkas SOP "${item.judul}" berhasil dikirim ke Verifikator Perangkat Daerah! Status: Menunggu Verifikasi.`);
+            }
+        }
+
+        function approveVerifikatorPd(id) {
+            let item = sopDataList.find(s => s.id === id);
+            if (item) {
+                item.status = 'DISETUJUI_PD';
+                renderTables();
+                alert(`SOP "${item.judul}" telah divalidasi dan disetujui secara elektronik (Kantor Virtual)! Berkas diteruskan ke Biro Organisasi.`);
+            }
+        }
+
+        function approveBiroFinal(id) {
+            let item = sopDataList.find(s => s.id === id);
+            if (item) {
+                item.status = 'TERINTEGRASI';
+                renderTables();
+                alert(`SOP "${item.judul}" telah terverifikasi final oleh Biro Organisasi dan terintegrasi penuh pada Executive Dashboard!`);
+            }
+        }
+
+        function openModalRevisi(id, role) {
+            activeRevisiSopId = id;
+            activeRevisiRole = role;
+            document.getElementById('revisi-text-input').value = '';
+            document.getElementById('modal-revisi').classList.remove('hidden');
+        }
+
+        function closeModalRevisi() {
+            document.getElementById('modal-revisi').classList.add('hidden');
+        }
+
+        function submitRevisiProcess() {
+            const note = document.getElementById('revisi-text-input').value;
+            if (!note) {
+                alert("Mohon isi catatan revisi!");
+                return;
+            }
+
+            let item = sopDataList.find(s => s.id === activeRevisiSopId);
+            if (item) {
+                if (activeRevisiRole === 'pd') {
+                    item.status = 'REVISI_INTERNAL_PD';
+                } else {
+                    item.status = 'REVISI_BIRO';
+                }
+                item.catatanRevisi = note;
+                renderTables();
+                closeModalRevisi();
+                alert("Catatan revisi telah terkirim kembali ke Admin Perangkat Daerah.");
+            }
+        }
+
+        function updateStatsCounts() {
+            const total = sopDataList.length;
+            document.getElementById('stat-total-sop').textContent = total.toLocaleString();
+            if (document.getElementById('pengawas-stat-total')) {
+                document.getElementById('pengawas-stat-total').textContent = total.toLocaleString();
+            }
+        }
+
+        // Initialize Chart.js
+        function initCharts() {
+            const ctx1 = document.getElementById('chartSopCategory').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['SOP AP (Administrasi)', 'SOP Teknis'],
+                    datasets: [{
+                        data: [sopDataList.filter(s => s.kategori === 'SOP AP').length, sopDataList.filter(s => s.kategori === 'SOP Teknis').length],
+                        backgroundColor: ['#1e40af', '#d97706'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            const ctx2 = document.getElementById('chartPdStatus').getContext('2d');
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: ['Terintegrasi', 'Dikirim ke Verifikator PD', 'Disetujui PD', 'Revisi Internal PD', 'Revisi Biro'],
+                    datasets: [{
+                        label: 'Jumlah data SOP',
+                        data: [
+                            sopDataList.filter(s => s.status === 'TERINTEGRASI').length,
+                            sopDataList.filter(s => s.status === 'DIKIRIM_KE_VERIFIKATOR_PD').length,
+                            sopDataList.filter(s => s.status === 'DISETUJUI_PD').length,
+                            sopDataList.filter(s => s.status === 'REVISI_INTERNAL_PD').length,
+                            sopDataList.filter(s => s.status === 'REVISI_BIRO').length
+                        ],
+                        backgroundColor: ['#059669', '#d97706', '#2563eb', '#dc2626'],
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+    </script>
+
+<!-- ORTIBALI Supabase authentication + backend adapter -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="supabase-client.js"></script>
+<script src="ortibali-backend.js"></script>
+<script src="ortibali-workflow.js"></script>
+</body>
+</html>

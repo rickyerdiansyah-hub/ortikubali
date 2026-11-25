@@ -1,0 +1,145 @@
+/* ORTIBALI shared responsive layer — applied to dashboard and standalone modules */
+:root{--ort-mobile-gutter:clamp(10px,3vw,22px)}
+html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:border-box}
+img,video{max-width:100%;height:auto}canvas,svg{max-width:100%}
+input,select,textarea,button{max-width:100%;font:inherit}
+.table-wrap,.table-responsive,.table-scroll,.overflow-x-auto,.om-scroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+iframe{max-width:100%}
+@media(max-width:760px){
+ body{width:100%;min-width:0}
+ .app,.layout,.dashboard-layout,.page-layout,.main-layout{max-width:100%;min-width:0}
+ .sidebar{max-width:100%;min-width:0}
+ main,.main,.main-content,.content,.page-content,.container,.wrapper{min-width:0;max-width:100%}
+ .container,.wrapper{width:100%;padding-left:var(--ort-mobile-gutter);padding-right:var(--ort-mobile-gutter)}
+ .grid,.grid-cols-2,.grid-cols-3,.grid-cols-4,.stats-grid,.kpi-grid{grid-template-columns:minmax(0,1fr)!important}
+ .flex-row,.toolbar,.page-header,.section-header{flex-wrap:wrap}
+ .card,.panel,.modal-card{min-width:0;max-width:100%}
+ .card{padding:clamp(12px,3vw,18px)}
+ .table-wrap table,.table-responsive table,.table-scroll table,.overflow-x-auto table,.om-scroll table{min-width:640px}
+ .form-grid,.input-grid,.form-row{grid-template-columns:minmax(0,1fr)!important}
+ .form-actions,.actions,.button-group{display:flex;flex-wrap:wrap;gap:8px}
+ .form-actions button,.actions button,.button-group button{min-height:40px}
+ .modal,.overlay{padding:8px!important;align-items:flex-end!important}
+ .modal-card,.dialog,.modal-content{width:100%!important;max-width:100%!important;max-height:94dvh;overflow:auto}
+ .sidebar{position:relative!important;inset:auto!important;width:100%!important;height:auto!important;min-height:0!important;overflow:visible!important}
+ .sidebar nav,.sidebar .nav,.side-nav{display:flex!important;flex-direction:row!important;gap:6px;max-width:100%;overflow-x:auto!important;overflow-y:hidden!important;white-space:nowrap;padding-bottom:8px}
+ .sidebar nav a,.sidebar nav button,.sidebar .nav a,.sidebar .nav button,.side-nav a,.side-nav button{flex:0 0 auto;width:auto!important;min-width:max-content;white-space:nowrap!important}
+ .main,.main-content{margin-left:0!important;width:100%!important;padding:var(--ort-mobile-gutter)!important}
+ header,.topbar,.navbar{max-width:100%;flex-wrap:wrap}
+ h1{font-size:clamp(20px,5vw,30px)}h2{font-size:clamp(18px,4.5vw,25px)}
+}
+@media(max-width:420px){
+ .kpis,.stats-grid,.kpi-grid{grid-template-columns:minmax(0,1fr)!important}
+ .container,.wrapper{padding-left:10px;padding-right:10px}
+ th,td{padding:8px!important;font-size:11px}
+ .modal-card,.dialog,.modal-content{padding:14px!important}
+}
+
+
+/* =========================================================
+   ORTIBALI RESPONSIVE ENHANCEMENT
+   Shared presentation layer. No application logic or data changes.
+   ========================================================= */
+
+/* Fluid media and safe sizing on every viewport */
+html { scroll-behavior: smooth; }
+body { font-size: clamp(14px, 0.88vw, 18px); }
+button, input, select, textarea { min-width: 0; }
+pre, code { max-width: 100%; overflow-wrap: anywhere; }
+table { max-width: 100%; }
+svg, canvas { max-width: 100%; }
+
+/* Wide monitors, meeting-room TVs and projectors */
+@media (min-width: 1440px) {
+  body { font-size: clamp(16px, 0.92vw, 20px); }
+  h1 { font-size: clamp(28px, 2vw, 40px); }
+  h2 { font-size: clamp(23px, 1.55vw, 32px); }
+  h3 { font-size: clamp(18px, 1.2vw, 25px); }
+  button, input, select, textarea { font-size: max(1em, 14px); }
+  th, td { line-height: 1.45; }
+  .card, .panel, .stat-card, .kpi-card, .hero {
+    border-radius: clamp(12px, .9vw, 20px);
+  }
+  .card, .panel { padding: clamp(16px, 1.25vw, 26px); }
+  .table-wrap, .table-responsive, .table-scroll, .om-scroll {
+    max-width: 100%;
+  }
+}
+
+/* Extra-wide presentation screens */
+@media (min-width: 1920px) {
+  body { font-size: clamp(17px, .95vw, 22px); }
+  h1 { font-size: clamp(32px, 2.1vw, 46px); }
+  h2 { font-size: clamp(26px, 1.65vw, 36px); }
+  h3 { font-size: clamp(20px, 1.25vw, 28px); }
+  th, td { padding: clamp(10px, .7vw, 16px); }
+  button { min-height: 40px; }
+}
+
+/* Laptop and tablet landscape */
+@media (min-width: 761px) and (max-width: 1100px) {
+  .app, .layout, .dashboard-layout, .page-layout, .main-layout {
+    max-width: 100%;
+    min-width: 0;
+  }
+  .sidebar { width: min(230px, 25vw); }
+  .main, .main-content, main {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .grid, .stats-grid, .kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .toolbar, .page-header, .section-header {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* Phones and portrait tablets */
+@media (max-width: 760px) {
+  body { font-size: 14px; }
+  .grid, .stats-grid, .kpi-grid, .dashboard-grid, .cards-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .two-column, .two-col, .content-grid, .dashboard-columns {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .page-header, .section-header, .toolbar, .topbar {
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .page-header > *, .section-header > *, .toolbar > * {
+    max-width: 100%;
+  }
+  table { white-space: nowrap; }
+  .table-wrap, .table-responsive, .table-scroll, .om-scroll {
+    width: 100%;
+    overflow-x: auto !important;
+  }
+  form { max-width: 100%; }
+  input, select, textarea { width: 100%; }
+  button { max-width: 100%; white-space: normal; }
+  img { object-fit: contain; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  body { font-size: 13px; }
+  .container, .wrapper, .main, .main-content {
+    padding-left: 9px !important;
+    padding-right: 9px !important;
+  }
+  th, td { font-size: 10px; padding: 6px !important; }
+}
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
