@@ -1,0 +1,43 @@
+ORTIBALI — PEMBARUAN INTEGRASI SUPABASE (TAHAP 1)
+=================================================
+
+BASIS: ORTIBALI_LOGIN_6_BIDANG(1).zip / salinan kerja yang sama.
+URL proyek: https://sxrqihnyprohwmpshwam.supabase.co
+
+YANG DIPERBARUI
+1. Menambahkan ortibali-backend.js sebagai adapter bersama untuk autentikasi, pengajuan, daftar pengajuan, upload lampiran, verifikasi, dan pengajuan ulang.
+2. Menautkan Supabase JS v2, supabase-config.js, supabase-client.js, dan adapter pada halaman utama serta halaman modul.
+3. Mengganti autentikasi hardcoded/demo pada MONSTER RB, DIANA, DIANA Presentasi, Perpustakaan, Kelembagaan, Pelayanan Publik, dan alur login Tatalaksana yang tersedia di kode menjadi autentikasi Supabase.
+4. Memindahkan form pengajuan Pelayanan Publik di dashboard utama ke tabel submissions dan Storage Supabase.
+5. Menghapus teks petunjuk password demo dari beberapa halaman.
+6. Memperbaiki error onclick null pada tombol pagination DIANA di index.html dengan pemeriksaan elemen.
+7. Mempertahankan berkas data, gambar, PDF, serta penyimpanan lokal lama sebagai cadangan.
+
+STRUKTUR DATABASE YANG DIGUNAKAN
+- profiles: id, role, bidang (dibaca saat login).
+- submissions: id, bidang, title, payload, status, created_by, reviewed_by, review_note, reviewed_at, created_at, updated_at.
+- attachments: id, submission_id, file_name, file_path, file_type, file_size, uploaded_by, created_at.
+- verification_history: id, submission_id, action, note, performed_by, created_at.
+- Storage bucket: ortibali-attachments (private).
+
+PENTING — STATUS IMPLEMENTASI
+Ini adalah tahap integrasi awal yang menghubungkan autentikasi dan menyediakan layanan backend bersama. Ini BELUM berarti seluruh formulir/fitur khusus dari enam modul sudah dimigrasikan. Data lama di localStorage/IndexedDB masih dipakai oleh beberapa modul dan tidak dihapus. Perlu tahap berikutnya untuk mengubah setiap formulir MONSTER RB, DIANA, Tatalaksana, Perpustakaan, Kelembagaan, dan Pelayanan Publik agar seluruh data domainnya memakai submissions, serta menyesuaikan tampilan antrean Master Admin dan pembacaan lampiran.
+
+TATALAKSANA: halaman sumber masih memiliki beberapa tombol simulasi/pergantian role dan tidak memiliki form login aktif yang lengkap; adapter sudah tersedia tetapi UI login khusus perlu diselesaikan pada tahap berikutnya. Jangan menganggap login Tatalaksana selesai hanya karena file adapter dimuat.
+
+CARA MENJALANKAN
+1. Ekstrak ZIP ke folder baru (jangan menimpa folder lama).
+2. Buka folder melalui VS Code.
+3. Jalankan index.html menggunakan Live Server.
+4. Pastikan internet aktif karena Supabase JS dimuat dari CDN.
+5. Uji login memakai username/password yang sudah dibuat pada Supabase Auth. Password tidak disimpan di kode.
+6. Jika login gagal, buka DevTools > Console dan Network, simpan pesan error lengkap.
+
+KEAMANAN
+- Publishable key pada supabase-config.js memang untuk frontend. Jangan pernah menambahkan Secret Key/service_role ke website.
+- Akses data tetap dibatasi oleh RLS Supabase.
+- Login memeriksa role dan bidang pada profiles; admin bidang lain ditolak.
+
+PENGUJIAN
+- Pemeriksaan sintaks JavaScript statis: 18 blok script diperiksa dengan Node.js dan tidak ditemukan syntax error.
+- Koneksi runtime ke Supabase dan proses login belum dapat diverifikasi dari lingkungan pembuatan ZIP; harus diuji melalui Live Server/browser milik pengguna.

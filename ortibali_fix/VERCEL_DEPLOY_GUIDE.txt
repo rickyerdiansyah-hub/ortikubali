@@ -1,0 +1,15 @@
+PANDUAN UPLOAD ORTIBALI KE VERCEL (STATIC WEBSITE)
+
+1. Ekstrak ZIP ORTIBALI_DEPLOY_VERCEL.zip.
+2. Buka folder hasil ekstrak. Pastikan file index.html terlihat langsung di folder tersebut.
+3. Upload folder yang berisi index.html beserta semua folder/file pendukungnya ke Vercel (jangan upload folder pembungkus yang satu tingkat di atasnya).
+4. Jika memakai halaman upload Vercel, pilih folder proyek hasil ekstrak yang langsung berisi index.html.
+5. Jangan hanya mengunggah index.html. Seluruh folder seperti assets, kelembagaan, pelayanan-publik, dokumen, data-kelembagaan-2026, serta seluruh file JSON/PDF/gambar harus ikut terunggah.
+6. Setelah deployment selesai, lakukan hard refresh (Ctrl+Shift+R). Jika masih gagal, buka DevTools > Network, filter Img, lalu lihat apakah ada request gambar berstatus 404.
+
+Perbaikan pada paket ini:
+- Referensi gambar lokal pada HTML/CSS diubah menjadi path absolut dari root website (contoh: /sidebar-bali-terbaru.jpg), sehingga tidak bergantung pada URL halaman atau subfolder.
+- Nama dan isi file gambar asli dipertahankan.
+- Desain, warna, menu, data, dan fitur tidak sengaja diubah.
+
+Catatan: path absolut mengharuskan deployment memakai folder proyek sebagai root dan index.html berada di root deployment.

@@ -1,0 +1,19 @@
+ORTIBALI — FRONTEND SAJA (LIVE SERVER)
+
+Versi ini disiapkan dari paket ORTIBALI_UPDATE_DATA_KELEMBAGAAN_2026 yang terakhir tersedia. Tampilan, halaman modul, aset gambar, JSON, Excel dan PDF sumber dipertahankan.
+
+CARA MENJALANKAN:
+1. Ekstrak ZIP ini ke satu folder.
+2. Buka folder ORTIBALI_FRONTEND_LIVE_SERVER di VS Code.
+3. Pastikan ekstensi Live Server terpasang.
+4. Klik kanan index.html lalu pilih Open with Live Server.
+
+CATATAN MODE FRONTEND:
+- Enam modul ditampilkan melalui halaman utama: MONSTER RB, DIANA, Tatalaksana, Perpustakaan, Kelembagaan, dan Pelayanan Publik.
+- Halaman dan data statis yang tersedia dapat dibuka melalui Live Server.
+- Login sungguhan, sinkronisasi data, unggah file, pengajuan, persetujuan, dan penyimpanan multi-pengguna belum aktif karena backend sengaja dipisahkan untuk tahap berikutnya.
+- Perpustakaan menampilkan daftar dokumen PDF lokal yang memang tersedia pada folder data-kelembagaan-2026.
+- Tidak ada musik/audio yang diputar.
+- Data yang tidak tersedia tidak dibuat-buat; bagian yang membutuhkan backend dapat terlihat kosong sampai tahap backend dikerjakan.
+
+Jangan menghapus folder aset, JSON, data-sumber-rb-2026, data-kelembagaan-2026, atau file PDF/Excel karena diperlukan halaman website.

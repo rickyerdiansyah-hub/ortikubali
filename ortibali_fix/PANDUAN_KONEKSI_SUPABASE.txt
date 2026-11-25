@@ -1,0 +1,29 @@
+KONEKSI SUPABASE ORTIBALI
+=========================
+
+File ini menambahkan fondasi koneksi Supabase untuk website ORTIBALI tanpa mengubah desain atau menghapus data lama.
+
+File baru:
+- supabase-config.js : URL proyek dan Publishable Key yang diberikan.
+- supabase-client.js : Supabase JS v2 client, login username/password, baca profil, dan logout.
+
+Untuk memuat koneksi pada halaman HTML, letakkan tiga script berikut sebelum script aplikasi halaman (urutan harus sama):
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="supabase-client.js"></script>
+
+Untuk halaman di subfolder, sesuaikan path relatif ke root, misalnya ../supabase-config.js dan ../supabase-client.js.
+
+Contoh pemanggilan login:
+const result = await window.ORTIBALI.signIn(username, password);
+console.log(result.profile);
+
+Akun username dipetakan ke email internal yang sudah dibuat di Supabase Auth. Pengguna tetap memasukkan username dan password, bukan Gmail. Password tidak ditanam di kode.
+
+PENTING:
+1. Publishable Key memang ditujukan untuk aplikasi frontend. Jangan pernah memasukkan Secret Key atau service_role key ke file website.
+2. Koneksi ini baru fondasi autentikasi bersama. Form pengajuan, lampiran Storage, verifikasi, catatan revisi, dan pengambilan data tiap bidang belum dialihkan otomatis oleh penambahan dua file ini.
+3. File lama dan localStorage sengaja dipertahankan agar data yang ada tidak hilang. Jangan hapus penyimpanan lokal sebelum migrasi dan pengujian selesai.
+4. Sebelum mengaktifkan login di semua modul, pastikan kolom `profiles.id` memang berisi UUID user Auth dan data role/bidang sesuai akun.
+5. Uji melalui localhost atau hosting HTTPS, bukan membuka file HTML langsung (file://).

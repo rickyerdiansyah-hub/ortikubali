@@ -1,0 +1,15 @@
+SISTEM LOGIN ORTIBALI - UJI COBA LOKAL
+
+Admin MONSTER RB: admin_monster / ADMIN123
+Admin DIANA: admin_diana / ADMIN123
+Admin Tatalaksana: admin_tatalaksana / ADMIN123
+Admin Perpustakaan: admin_perpus / ADMIN123
+Admin Kelembagaan: admin_kelembagaan / ADMIN123
+Admin Pelayanan Publik: admin_pelayanan / ADMIN123
+Master Admin seluruh bidang: master / MASTER123
+
+CATATAN PENTING
+1. Ini masih prototipe frontend; akun disimpan/diperiksa oleh JavaScript di browser dan BUKAN autentikasi aman untuk produksi.
+2. Penyimpanan dan antrean verifikasi tiap modul masih menggunakan mekanisme lokal/terpisah. Satu akun Master dapat login ke setiap bidang, tetapi antrean lintas bidang belum digabung menjadi satu dashboard.
+3. Gunakan Live Server dari folder utama agar jalur relatif dan aset website tetap terbaca.
+4. Jangan gunakan password sementara ini untuk website produksi. Backend Supabase diperlukan untuk keamanan, sinkronisasi perangkat, dan akun sungguhan.
