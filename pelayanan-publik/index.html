@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pelayanan Publik | ORTIBALI</title>
+<style>
+:root{--maroon:#073879;--maroon2:#0756ad;--pink:#1672c8;--gold:#f2cf72;--ink:#17243b;--muted:#71809a;--bg:#f4f8fd;--line:#e3ebf5;--white:#fff;--green:#16834b;--orange:#d97706;--blue:#0969c7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink)}
+.sidebar{width:270px;position:fixed;inset:0 auto 0 0;z-index:10;overflow:hidden;color:#fff;background:#08285c url("/pelayanan-publik/assets/sidebar-bali.jpg") center/100% 100% no-repeat;display:flex;flex-direction:column}
+.sidebar:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,20,58,.12),rgba(0,24,70,.42) 58%,rgba(0,16,52,.18));pointer-events:none}
+.side-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column}
+.side-brand{height:210px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding:0 16px 17px;text-align:center}
+.side-brand .brand-caption{display:none}
+.nav-label{padding:12px 22px 8px;font-size:10px;letter-spacing:1.5px;font-weight:800;color:#eaf4ff;text-shadow:0 1px 4px #001b46}
+nav{padding:0 12px}.nav-link{display:flex;align-items:center;gap:13px;color:#fff;text-decoration:none;padding:13px;border-radius:11px;margin:4px 0;font-size:13px;font-weight:600;background:rgba(0,35,91,.48);border:1px solid rgba(255,255,255,.10);transition:.18s}
+.nav-link:hover{background:rgba(24,112,205,.55)}.nav-link.active{background:linear-gradient(100deg,#0876df,#064a9f);border-color:#78baff;box-shadow:0 5px 16px #001b4666}
+.nav-icon{width:23px;text-align:center;font-size:17px;color:#ffe58b;flex:none}.side-bottom{margin-top:auto;padding:12px 15px 18px;font-size:10px;color:#f3dff4;text-shadow:0 1px 4px #25002c}
+.main{margin-left:270px;min-height:100vh;padding:0 26px 35px}
+.topbar{height:64px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);margin-bottom:17px}
+.top-left{display:flex;align-items:center;gap:12px}.hamburger{border:0;background:#eaf3ff;color:var(--maroon);width:36px;height:36px;border-radius:9px;font-size:18px;cursor:pointer}
+.crumb{font-size:12px;color:var(--muted)}.crumb b{color:var(--maroon)}
+.top-actions{display:flex;align-items:center;gap:9px}.role-badge{font-size:11px;color:#6a5b70;background:#eaf3ff;padding:8px 10px;border-radius:20px}
+.btn{border:0;border-radius:9px;background:var(--maroon);color:white;padding:10px 14px;font-size:11px;font-weight:750;cursor:pointer;transition:.15s}.btn:hover{background:var(--maroon2)}
+.btn.light{background:#edf5ff;color:var(--maroon);border:1px solid #d6e7fb}.btn.outline{background:#fff;color:var(--maroon);border:1px solid #cbdcf0}
+.banner{width:100%;height:clamp(190px,23vw,310px);min-height:190px;border-radius:16px;overflow:hidden;box-shadow:0 8px 24px #092c5a18;background:#08285c}
+.banner img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.content{max-width:1500px;margin:17px auto 0}.section-title{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
+.section-title h2{font-size:18px;margin:0 0 4px}.section-title p{font-size:11px;color:var(--muted);margin:0}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:15px}
+.stat,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 4px 16px #2f0d3208}
+.stat{padding:15px;display:flex;gap:12px;align-items:center;min-width:0}.stat-icon{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;background:#e8f2ff;color:#0756ad;font-size:20px;flex:none}
+.stat:nth-child(2) .stat-icon{background:#e4f2ff;color:#0874c9}.stat:nth-child(3) .stat-icon{background:#e4f8ed;color:#149657}.stat:nth-child(4) .stat-icon{background:#fff0e5;color:#eb6a20}
+.stat-label{font-size:10px;color:var(--muted)}.stat-value{font-size:23px;font-weight:850;color:#17121c;margin:3px 0}.stat-note{font-size:10px;color:#88818e}
+.panel{padding:17px;margin-bottom:15px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}
+.panel-head h3{font-size:14px;margin:0 0 4px}.sub{font-size:10px;color:var(--muted)}.pill{font-size:10px;font-weight:800;color:#741044;background:#eaf3ff;padding:6px 9px;border-radius:20px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:11px}input,select,textarea{font:inherit;font-size:12px;border:1px solid #ddd6e2;border-radius:8px;padding:10px 11px;background:#fff;color:var(--ink);min-width:0}
+.toolbar input{flex:1;min-width:190px}.toolbar select{min-width:170px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:collapse;min-width:850px}
+th{background:#edf4fc;color:#24466f;font-size:10px;text-align:left;padding:11px;border-bottom:1px solid var(--line)}
+td{padding:10px 11px;font-size:11px;border-bottom:1px solid #eeeaf1;color:#4e4854;vertical-align:top}tr:last-child td{border-bottom:0}
+.tag{display:inline-block;padding:5px 8px;border-radius:6px;font-size:10px;background:#eee5ff;color:#5d1bb3}.tag.green{background:#e1f7e7;color:#08702e}.tag.orange{background:#fff2dc;color:#9a5b00}.tag.blue{background:#e1f0ff;color:#075b9d}.tag.red{background:#fde8e8;color:#a51d2d}
+.action{display:inline-flex;gap:5px;align-items:center;flex-wrap:wrap}.link-btn{border:0;border-radius:7px;padding:7px 9px;background:#0756ad;color:#fff;cursor:pointer;font-size:11px;text-decoration:none}
+.empty{text-align:center;padding:25px;color:#89818f}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:11px}.field{display:flex;flex-direction:column;gap:5px}.field label{font-size:10px;font-weight:750;color:#5e5363}.field.full{grid-column:1/-1}.field textarea{min-height:70px;resize:vertical}.form-actions{display:flex;gap:8px;margin-top:13px}
+.hidden{display:none!important}.view{display:none}.view.active{display:block}.footer{text-align:center;color:#99919d;font-size:10px;padding:10px}
+.modal-backdrop{position:fixed;inset:0;background:#160b1dcc;z-index:50;display:none;align-items:center;justify-content:center;padding:18px}.modal-backdrop.show{display:flex}
+.modal{width:min(450px,100%);background:#fff;border-radius:16px;padding:22px;box-shadow:0 20px 70px #0005}.modal h3{margin:0 0 6px;font-size:18px;color:var(--maroon)}.modal p{margin:0 0 16px;color:var(--muted);font-size:11px;line-height:1.5}
+.modal .field{margin-bottom:11px}.modal .field input,.modal .field select{width:100%}.modal-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:14px}
+.notice{padding:10px 12px;background:#fff6e7;border:1px solid #f3dfb8;color:#77541b;border-radius:9px;font-size:10px;line-height:1.5;margin-top:12px}
+.user-row{display:flex;justify-content:space-between;align-items:center;border:1px solid var(--line);border-radius:9px;padding:10px;margin:7px 0;font-size:11px}
+.chart-wrap{height:250px;position:relative}.chart-wrap canvas{width:100%;height:100%}
+.kpi-note{font-size:10px;color:var(--muted);margin-top:8px}.mobile-toggle{display:none}
+@media(max-width:1100px){.sidebar{width:235px}.main{margin-left:235px;padding:0 18px 30px}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.sidebar{width:270px;transform:translateX(-100%);transition:.22s;box-shadow:8px 0 30px #16051d33}.sidebar.open{transform:translateX(0)}.main{margin-left:0;padding:0 12px 24px}.topbar{height:57px}.banner{height:clamp(150px,42vw,230px);min-height:150px}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.section-title{align-items:flex-start;flex-direction:column}.role-badge{display:none}}
+@media(max-width:430px){.stats{gap:7px}.stat{padding:10px;gap:8px}.stat-icon{width:34px;height:34px}.stat-value{font-size:20px}.stat-note{font-size:9px}.panel{padding:13px}}
+
+/* Animasi terpadu ORTIBALI: masuk halaman, kartu bertahap, hover dan transisi halus. */
+@keyframes ortibaliPageEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes ortibaliCardEnter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+body{animation:ortibaliPageEnter .45s ease both}
+.banner,.stat,.panel{animation:ortibaliCardEnter .5s ease both}
+.stat:nth-child(2){animation-delay:.05s}.stat:nth-child(3){animation-delay:.1s}.stat:nth-child(4){animation-delay:.15s}
+.nav-link,.btn,.link-btn{transition:background .2s ease,color .2s ease,transform .2s ease,box-shadow .2s ease}
+.nav-link:hover,.btn:hover,.link-btn:hover{transform:translateY(-2px)}
+@media(prefers-reduced-motion:reduce){body,.banner,.stat,.panel{animation:none!important;transition:none!important}}
+
+</style><style id="ortibali-sidebar-stability">
+/* Pelayanan Publik sidebar: keep illustration aligned while content scrolls */
+.sidebar{box-sizing:border-box;min-width:0;overflow:hidden;isolation:isolate;background-position:center center!important;background-size:cover!important;background-repeat:no-repeat!important}.sidebar:before,.sidebar:after{pointer-events:none!important}.sidebar .side-content{position:relative;z-index:1;display:flex;flex-direction:column;min-height:0;height:100%;overflow:hidden}.sidebar nav,.sidebar .nav{min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}.sidebar a,.sidebar button{transform:none!important;transition:background-color .16s ease,color .16s ease,box-shadow .16s ease}
+</style>
+<link rel="stylesheet" href="/ortibali-mobile.css">
+</head>
+<body>
+<aside class="sidebar" id="sidebar"><div class="side-content">
+ <div class="side-brand"><div class="brand-caption">PEMERINTAH PROVINSI BALI<br>BIRO ORGANISASI SETDA PROVINSI BALI</div></div>
+ <div class="nav-label">MENU PELAYANAN PUBLIK</div>
+ <nav>
+  <a class="nav-link active" href="#" data-view="dashboard"><span class="nav-icon">⌂</span>Dashboard Pelayanan</a>
+  <a class="nav-link" href="#" data-view="ikm"><span class="nav-icon">▥</span>Indeks Kepuasan (IKM)</a>
+  <a class="nav-link" href="#" data-view="ipp"><span class="nav-icon">▤</span>IPP / PEKPPP Nasional</a>
+  <a class="nav-link" href="#" data-view="ombudsman"><span class="nav-icon">⚖</span>Penilaian Ombudsman</a>
+  <a class="nav-link" href="#" data-view="facilitation"><span class="nav-icon">◎</span>Fasilitasi Pelayanan</a>
+  <a class="nav-link" href="#" data-view="monitoring"><span class="nav-icon">◷</span>Pemantauan Tindak Lanjut</a>
+  <a class="nav-link" href="#" data-view="evidence"><span class="nav-icon">▣</span>Bukti Dukung</a>
+  <a class="nav-link" href="#" data-view="delivery"><span class="nav-icon">⇧</span>Status Pengiriman</a>
+  <a class="nav-link admin-only hidden" href="#" data-view="add"><span class="nav-icon">＋</span>Input / Kelola Data</a>
+  <a class="nav-link master-only hidden" href="#" data-view="users"><span class="nav-icon">♙</span>Kelola Akun</a>
+ </nav>
+ <div class="side-bottom">MODUL PELAYANAN PUBLIK<br>ORTIBALI · PEMERINTAH PROVINSI BALI</div>
+</div></aside>
+<main class="main">
+ <header class="topbar"><div class="top-left"><button class="hamburger" id="hamburger">☰</button><div class="crumb">ORTIBALI / <b id="crumbText">Pelayanan Publik</b></div></div>
+ <div class="top-actions"><span class="role-badge" id="roleBadge">Akses Publik</span><button class="btn light" id="homeBtn">← Beranda</button><button class="btn" id="loginBtn">Login</button><button class="btn light hidden" id="logoutBtn">Keluar</button></div></header>
+ <section class="banner"><img src="/pelayanan-publik/assets/header-bali.jpg" alt="Pemandangan Bali"></section>
+ <div class="content">
+  <section class="view active" id="view-dashboard">
+   <div class="section-title"><div><h2>Dashboard Pelayanan Publik</h2><p>Ringkasan Indeks Kepuasan Masyarakat dan pemantauan tindak lanjut pelayanan publik.</p></div><span class="pill">PELAYANAN PUBLIK</span></div>
+   <div class="stats">
+    <div class="stat"><div class="stat-icon">▥</div><div><div class="stat-label">IKM Terbaru</div><div class="stat-value" id="latestIkm">86,83</div><div class="stat-note">Tahun 2025</div></div></div>
+    <div class="stat"><div class="stat-icon">↗</div><div><div class="stat-label">Perubahan 2023–2025</div><div class="stat-value">+2,13</div><div class="stat-note">Poin indeks</div></div></div>
+    <div class="stat"><div class="stat-icon">◷</div><div><div class="stat-label">Dalam Proses</div><div class="stat-value" id="inProgressStat">0</div><div class="stat-note">Tindak lanjut</div></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><div class="stat-label">Selesai</div><div class="stat-value" id="doneStat">0</div><div class="stat-note">Tindak lanjut</div></div></div>
+   </div>
+   <section class="panel"><div class="panel-head"><div><h3>Tren Indeks Kepuasan Masyarakat (IKM)</h3><div class="sub">Data awal yang telah dicatat untuk tahun 2023–2025.</div></div><span class="pill">2023–2025</span></div><div class="chart-wrap"><canvas id="ikmChart"></canvas></div><div class="kpi-note">Nilai IKM: 2023 = 84,70 · 2024 = 85,56 · 2025 = 86,83. Status “Baik” tercatat pada tahun 2025.</div></section>
+   <div class="stats" style="margin-top:14px">
+    <div class="stat"><div class="stat-icon">★</div><div><div class="stat-label">Indeks Pelayanan Publik 2025</div><div class="stat-value">4,68</div><div class="stat-note">Kategori A · Peringkat 6 dari 38 provinsi</div></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><div class="stat-label">Fasilitasi Pelayanan 2025</div><div class="stat-value">95%</div><div class="stat-note">Realisasi pelaksanaan subkegiatan</div></div></div>
+    <div class="stat"><div class="stat-icon">⚖</div><div><div class="stat-label">Nilai Ombudsman 2025</div><div class="stat-value">82,57</div><div class="stat-note">Kategori Baik</div></div></div>
+    <div class="stat"><div class="stat-icon">◎</div><div><div class="stat-label">Lokus PEKPPP Nasional</div><div class="stat-value">2</div><div class="stat-note">1 nilai lokus belum tercantum pada sumber</div></div></div>
+   </div>
+   <section class="panel"><div class="panel-head"><div><h3>Ringkasan Pemantauan</h3><div class="sub">Status aksi/tindak lanjut dan status pengiriman.</div></div><button class="btn light" onclick="showView('monitoring')">Lihat Pemantauan →</button></div><div id="monitorSummary"></div></section>
+  </section>
+  <section class="view" id="view-ikm">
+   <div class="section-title"><div><h2>Data Indeks Kepuasan Masyarakat</h2><p>Kelola nilai IKM per tahun dan catatan status hasil pengukuran.</p></div><span class="pill" id="ikmCount">3 data</span></div>
+   <section class="panel"><div class="toolbar"><input id="ikmSearch" placeholder="Cari tahun atau indikator..."><button class="btn light admin-only hidden" onclick="newIkm()">＋ Tambah IKM</button><button class="btn light" onclick="exportCsv('ikm')">Ekspor CSV</button></div>
+   <div class="table-wrap"><table><thead><tr><th>Tahun</th><th>Indikator</th><th>Nilai IKM</th><th>Status</th><th>Catatan</th><th>Aksi</th></tr></thead><tbody id="ikmBody"></tbody></table></div></section>
+  </section>
+  <section class="view" id="view-ipp">
+   <div class="section-title"><div><h2>Indeks Pelayanan Publik (IPP) / PEKPPP Nasional</h2><p>Hasil Pemantauan dan Evaluasi Kinerja Penyelenggaraan Pelayanan Publik oleh Kementerian PANRB.</p></div><span class="pill">2023–2025</span></div>
+   <section class="panel"><div class="panel-head"><div><h3>Perkembangan Nilai IPP Pemerintah Provinsi Bali</h3><div class="sub">Nilai yang tercantum pada bahan profil Biro Organisasi.</div></div><span class="tag">Peringkat 6 / 38 Provinsi pada 2025</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Tahun</th><th>Nilai IPP</th><th>Keterangan</th></tr></thead><tbody>
+     <tr><td>2023</td><td><b>4,21</b></td><td>Nilai Indeks Pelayanan Publik</td></tr>
+     <tr><td>2024</td><td><b>4,41</b></td><td>Nilai Indeks Pelayanan Publik</td></tr>
+     <tr><td>2025</td><td><b>4,68</b></td><td><span class="tag green">Kategori A</span> Peringkat 6 dari 38 provinsi</td></tr>
+    </tbody></table></div>
+   </section>
+   <section class="panel"><div class="panel-head"><div><h3>Lokus Evaluasi PEKPPP Nasional Tahun 2025</h3><div class="sub">Dilaksanakan pada 2 lokus unit layanan; hasil penilaian digunakan sebagai nilai IPP Pemerintah Provinsi Bali.</div></div></div>
+    <div class="table-wrap"><table><thead><tr><th>No.</th><th>Nama Unit Lokus Evaluasi</th><th>Nilai Total (IPP)</th><th>Keterangan</th></tr></thead><tbody>
+     <tr><td>1</td><td>Rumah Sakit Umum Daerah Bali Mandara</td><td><b>4,68 (A)</b></td><td>Nilai tercantum pada sumber.</td></tr>
+     <tr><td>2</td><td>Dinas Sosial, Pemberdayaan Perempuan dan Perlindungan Anak Provinsi Bali</td><td>Belum tercantum</td><td>Dokumen sumber tidak menampilkan nilai pada baris ini; tidak diisi dengan perkiraan.</td></tr>
+    </tbody></table></div>
+   </section>
+  </section>
+  <section class="view" id="view-ombudsman">
+   <div class="section-title"><div><h2>Penilaian Maladministrasi Pelayanan Publik</h2><p>Hasil penilaian Ombudsman RI Tahun 2025.</p></div><span class="pill">Tahun 2025</span></div>
+   <div class="stats">
+    <div class="stat"><div class="stat-icon">⚖</div><div><div class="stat-label">Nilai Akhir</div><div class="stat-value">82,57</div><div class="stat-note">Kategori Baik</div></div></div>
+    <div class="stat"><div class="stat-icon">✓</div><div><div class="stat-label">Opini Ombudsman</div><div class="stat-value" style="font-size:15px">Kualitas Tinggi</div><div class="stat-note">Tanpa Maladministrasi</div></div></div>
+    <div class="stat"><div class="stat-icon">▤</div><div><div class="stat-label">Unit layanan dinilai</div><div class="stat-value">3</div><div class="stat-note">Tahun 2025</div></div></div>
+    <div class="stat"><div class="stat-icon">◎</div><div><div class="stat-label">Sumber penilaian</div><div class="stat-value" style="font-size:16px">Ombudsman RI</div><div class="stat-note">Penilaian maladministrasi</div></div></div>
+   </div>
+   <section class="panel"><div class="panel-head"><div><h3>Nilai Unit Layanan yang Dinilai</h3><div class="sub">Nilai sesuai tabel pada bahan profil Biro Organisasi.</div></div></div>
+    <div class="table-wrap"><table><thead><tr><th>No.</th><th>Unit Layanan</th><th>Nilai</th></tr></thead><tbody>
+     <tr><td>1</td><td>Rumah Sakit Umum Daerah Bali Mandara</td><td><b>87,13</b></td></tr>
+     <tr><td>2</td><td>Dinas Pendidikan, Kepemudaan, dan Olahraga</td><td><b>83,80</b></td></tr>
+     <tr><td>3</td><td>Panti Sosial Asuhan Anak Udyana Wiguna</td><td><b>76,78</b></td></tr>
+     <tr><td colspan="2"><b>Nilai Akhir</b></td><td><b>82,57 (Baik)</b></td></tr>
+    </tbody></table></div>
+    <div class="notice">Opini: “Kualitas Tinggi Tanpa Maladministrasi”.</div>
+   </section>
+  </section>
+  <section class="view" id="view-facilitation">
+   <div class="section-title"><div><h2>Fasilitasi Peningkatan Pelayanan Publik</h2><p>Ruang lingkup subkegiatan dan realisasi pelaksanaan Tahun 2025.</p></div><span class="pill">Tahun 2025</span></div>
+   <div class="stats">
+    <div class="stat"><div class="stat-icon">✓</div><div><div class="stat-label">Realisasi pelaksanaan</div><div class="stat-value">95%</div><div class="stat-note">Sesuai target yang ditetapkan</div></div></div>
+   </div>
+   <section class="panel"><div class="panel-head"><div><h3>Ruang Lingkup Subkegiatan</h3><div class="sub">Fasilitasi peningkatan kualitas pelayanan publik.</div></div></div>
+    <div class="user-row"><span><b>Asistensi peningkatan kualitas pelayanan publik</b><br><small>Fasilitasi penyusunan standar pelayanan, survei kepuasan masyarakat, inovasi pelayanan publik, forum konsultasi publik, dan pengisian formulir F-01.</small></span><span class="tag">Ruang lingkup</span></div>
+    <div class="user-row"><span><b>Pemantauan dan Evaluasi Kinerja Penyelenggaraan Pelayanan Publik (PEKPPP)</b><br><small>Evaluasi oleh Kementerian PANRB.</small></span><span class="tag">Ruang lingkup</span></div>
+    <div class="user-row"><span><b>Penilaian maladministrasi pelayanan publik</b><br><small>Penilaian oleh Ombudsman Republik Indonesia.</small></span><span class="tag">Ruang lingkup</span></div>
+    <div class="notice">Pada Tahun 2025, pelaksanaan subkegiatan dilaporkan berjalan sesuai target untuk kelengkapan standar pelayanan, survei kepuasan masyarakat, inovasi pelayanan publik, forum konsultasi publik, dan pengisian formulir F-01 sebesar 95%.</div>
+   </section>
+  </section>
+  <section class="view" id="view-monitoring">
+   <div class="section-title"><div><h2>Pemantauan Aksi dan Tindak Lanjut</h2><p>Catat tindak lanjut hasil evaluasi atau pemantauan pelayanan publik.</p></div></div>
+   <section class="panel"><div class="toolbar"><input id="monitorSearch" placeholder="Cari indikator atau aksi..."><select id="actionFilter"><option value="">Semua Status Aksi</option><option>Belum Dikerjakan</option><option>Dalam Proses</option><option>Perlu Tindak Lanjut</option><option>Selesai</option></select><button class="btn light admin-only hidden" onclick="newMonitor()">＋ Tambah Pemantauan</button><button class="btn light" onclick="exportCsv('monitor')">Ekspor CSV</button></div>
+   <div class="table-wrap"><table><thead><tr><th>Indikator / Temuan</th><th>Tahun</th><th>Status Aksi</th><th>Aksi / Tindak Lanjut</th><th>Bukti Dukung</th><th>Status Pengiriman</th><th>Aksi</th></tr></thead><tbody id="monitorBody"></tbody></table></div></section>
+  </section>
+  <section class="view" id="view-evidence">
+   <div class="section-title"><div><h2>Bukti Dukung</h2><p>Daftar file atau tautan bukti dukung yang dicatat pada pemantauan.</p></div></div>
+   <section class="panel"><div class="toolbar"><input id="evidenceSearch" placeholder="Cari bukti dukung..."><button class="btn light admin-only hidden" onclick="showView('add')">＋ Tambah Bukti / Pemantauan</button></div><div id="evidenceList"></div></section>
+  </section>
+  <section class="view" id="view-delivery">
+   <div class="section-title"><div><h2>Status Pengiriman</h2><p>Pantau status dokumen atau laporan yang dikirimkan.</p></div></div>
+   <section class="panel"><div class="toolbar"><input id="deliverySearch" placeholder="Cari indikator..."><select id="deliveryFilter"><option value="">Semua Status Pengiriman</option><option>Belum Dikirim</option><option>Sudah Dikirim</option><option>Perlu Revisi</option></select></div><div class="table-wrap"><table><thead><tr><th>Indikator / Temuan</th><th>Tahun</th><th>Status Pengiriman</th><th>Catatan</th><th>Terakhir Diperbarui</th></tr></thead><tbody id="deliveryBody"></tbody></table></div></section>
+  </section>
+  <section class="view" id="view-add">
+   <div class="section-title"><div><h2 id="formHeading">Input Pemantauan Pelayanan Publik</h2><p>Menu pengelolaan data khusus Admin dan Master Admin.</p></div></div>
+   <section class="panel"><form id="monitorForm"><input type="hidden" id="monitorId"><div class="form-grid">
+    <div class="field"><label>Indikator / Temuan *</label><input id="mIndicator" required placeholder="Nama indikator atau hasil pemantauan"></div>
+    <div class="field"><label>Tahun *</label><input id="mYear" type="number" min="2000" max="2100" value="2025" required></div>
+    <div class="field"><label>Status aksi *</label><select id="mAction"><option>Belum Dikerjakan</option><option>Dalam Proses</option><option>Perlu Tindak Lanjut</option><option>Selesai</option></select></div>
+    <div class="field"><label>Status pengiriman *</label><select id="mDelivery"><option>Belum Dikirim</option><option>Sudah Dikirim</option><option>Perlu Revisi</option></select></div>
+    <div class="field"><label>File bukti dukung</label><input id="mFile" type="file"></div>
+    <div class="field"><label>Tautan bukti dukung (opsional)</label><input id="mUrl" type="url" placeholder="https://..."></div>
+    <div class="field full"><label>Aksi / Tindak Lanjut</label><textarea id="mActionText" placeholder="Uraikan rencana atau hasil tindak lanjut..."></textarea></div>
+    <div class="field full"><label>Catatan</label><textarea id="mNotes"></textarea></div>
+   </div><div class="form-actions"><button class="btn" type="submit">Simpan Pemantauan</button><button class="btn light" type="reset" id="resetMonitor">Kosongkan</button></div><div class="notice">Data dan file pada versi demo ini tersimpan di browser/perangkat yang digunakan. Untuk penggunaan resmi, gunakan backend dan penyimpanan file server dengan pengaturan hak akses.</div></form></section>
+  </section>
+  <section class="view" id="view-ikmform">
+   <div class="section-title"><div><h2 id="ikmFormHeading">Tambah Data IKM</h2><p>Input nilai Indeks Kepuasan Masyarakat per tahun.</p></div></div>
+   <section class="panel"><form id="ikmForm"><input type="hidden" id="ikmId"><div class="form-grid">
+    <div class="field"><label>Tahun *</label><input id="iYear" type="number" min="2000" max="2100" required></div>
+    <div class="field"><label>Indikator *</label><input id="iIndicator" value="Indeks Kepuasan Masyarakat (IKM)" required></div>
+    <div class="field"><label>Nilai IKM *</label><input id="iValue" type="number" step="0.01" min="0" max="100" required></div>
+    <div class="field"><label>Status</label><input id="iStatus" placeholder="Contoh: Baik"></div>
+    <div class="field full"><label>Catatan</label><textarea id="iNotes"></textarea></div>
+   </div><div class="form-actions"><button class="btn" type="submit">Simpan IKM</button><button class="btn light" type="button" onclick="showView('ikm')">Batal</button></div></form></section>
+  </section>
+  <section class="view" id="view-users">
+   <div class="section-title"><div><h2>Kelola Akun</h2><p>Fitur Master Admin untuk membuat dan menghapus akun Admin modul Pelayanan Publik.</p></div></div>
+   <section class="panel"><form id="userForm" class="form-grid"><div class="field"><label>Nama pengguna</label><input id="newUsername" required></div><div class="field"><label>Kata sandi</label><input id="newPassword" type="password" minlength="6" required></div><div class="field"><label>Nama tampilan</label><input id="newDisplay" required></div><div class="field full"><button class="btn">Buat Akun Admin</button></div></form><div id="userList"></div></section>
+  </section>
+  <div class="footer">ORTIBALI · Modul Pelayanan Publik</div>
+ </div>
+</main>
+<div class="modal-backdrop" id="loginModal"><div class="modal"><h3>Login Pengelola</h3><p>Publik dapat melihat data tanpa login. Masuk sebagai Admin atau Master Admin untuk mengelola data Pelayanan Publik.</p>
+ <form id="loginForm"><div class="field"><label>Nama pengguna</label><input id="loginUsername" autocomplete="username" required></div><div class="field"><label>Kata sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required></div><div id="loginError" style="color:#bd2634;font-size:11px;min-height:16px"></div><div class="modal-actions"><button class="btn light" type="button" id="cancelLogin">Batal</button><button class="btn" type="submit">Masuk</button></div></form>
+ <div class="notice">Login menggunakan akun resmi ORTIBALI yang telah terdaftar di Supabase.</div></div></div>
+<script>
+const IKM_INITIAL=[
+ {id:'ikm-2023',year:2023,indicator:'Indeks Kepuasan Masyarakat (IKM)',value:84.70,status:'',notes:'Data awal yang pernah diberikan.'},
+ {id:'ikm-2024',year:2024,indicator:'Indeks Kepuasan Masyarakat (IKM)',value:85.56,status:'',notes:'Data awal yang pernah diberikan.'},
+ {id:'ikm-2025',year:2025,indicator:'Indeks Kepuasan Masyarakat (IKM)',value:86.83,status:'Baik',notes:'Status Baik sesuai data sebelumnya.'}
+];
+const DOCS_KEY='ortibali_pelayanan_monitor_v1', IKM_KEY='ortibali_pelayanan_ikm_v1', USERS_KEY='ortibali_pelayanan_users_v1', SESSION_KEY='ortibali_pelayanan_session_v1';
+let ikm=load(IKM_KEY,IKM_INITIAL), monitors=load(DOCS_KEY,[]), users=[], session=null; localStorage.removeItem(SESSION_KEY);
+function load(k,f){try{let v=localStorage.getItem(k);return v?JSON.parse(v):JSON.parse(JSON.stringify(f))}catch(e){return JSON.parse(JSON.stringify(f))}}
+
+// ORTIBALI IKM data migration: restore only the three verified source records
+// when a previous browser cache contains an empty or partial IKM list.
+// Existing records and user-entered values are preserved.
+const IKM_SEED_MIGRATION_KEY='ortibali_pelayanan_ikm_seed_migration_v2';
+function migrateVerifiedIkmSeed(){
+ try{
+  if(localStorage.getItem(IKM_SEED_MIGRATION_KEY)==='1') return;
+  const current=Array.isArray(ikm)?ikm:[];
+  const merged=[...current];
+  const hasRecord=seed=>merged.some(row=>
+   String(row.id||'')===String(seed.id) ||
+   (Number(row.year)===Number(seed.year) &&
+    String(row.indicator||'').trim().toLowerCase()===String(seed.indicator).trim().toLowerCase())
+  );
+  IKM_INITIAL.forEach(seed=>{
+   if(!hasRecord(seed)) merged.push({...seed});
+  });
+  ikm=merged.sort((a,b)=>Number(a.year)-Number(b.year));
+  localStorage.setItem(IKM_KEY,JSON.stringify(ikm));
+  localStorage.setItem(IKM_SEED_MIGRATION_KEY,'1');
+ }catch(error){
+  console.warn('Migrasi data awal IKM tidak dapat disimpan:',error);
+ }
+}
+migrateVerifiedIkmSeed();
+
+function save(){localStorage.setItem(DOCS_KEY,JSON.stringify(monitors));localStorage.setItem(IKM_KEY,JSON.stringify(ikm))}
+function $(id){return document.getElementById(id)}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function role(){return session?.role||'public'}function canManage(){return role()==='admin'||role()==='master'}
+function showView(name){
+ if((name==='add'||name==='ikmform')&&!canManage()){openLogin();return}
+ if(name==='users'&&role()!=='master'){alert('Menu ini khusus Master Admin.');return}
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('view-'+name).classList.add('active');
+ document.querySelectorAll('.nav-link').forEach(a=>a.classList.toggle('active',a.dataset.view===name));
+ const labels={dashboard:'Dashboard Pelayanan',ikm:'Indeks Kepuasan (IKM)',ipp:'IPP / PEKPPP Nasional',ombudsman:'Penilaian Ombudsman',facilitation:'Fasilitasi Pelayanan',monitoring:'Pemantauan Tindak Lanjut',evidence:'Bukti Dukung',delivery:'Status Pengiriman',add:'Input / Kelola Data',ikmform:'Form Data IKM',users:'Kelola Akun'};
+ $('crumbText').textContent=labels[name]||'Pelayanan Publik';$('sidebar').classList.remove('open');renderAll();
+}
+document.querySelectorAll('.nav-link[data-view]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();showView(a.dataset.view)}));
+function updateAuth(){let r=role();$('roleBadge').textContent=r==='master'?'Master Admin':r==='admin'?'Admin':'Akses Publik';$('loginBtn').classList.toggle('hidden',r!=='public');$('logoutBtn').classList.toggle('hidden',r==='public');document.querySelectorAll('.admin-only').forEach(x=>x.classList.toggle('hidden',!canManage()));document.querySelectorAll('.master-only').forEach(x=>x.classList.toggle('hidden',r!=='master'))}
+function openLogin(){$('loginError').textContent='';$('loginModal').classList.add('show')}
+$('loginBtn').onclick=openLogin;$('cancelLogin').onclick=()=>$('loginModal').classList.remove('show');
+$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='Memeriksa akun Supabase…';try{const a=await window.ORTIBALI_BACKEND.authLogin($('loginUsername').value.trim(),$('loginPassword').value,'pelayanan-publik');session={username:a.username,display:a.display,role:a.role,module:a.bidang};$('loginModal').classList.remove('show');updateAuth();renderAll();showView('dashboard')}catch(err){$('loginError').textContent=err.message||'Login gagal.'}};
+$('logoutBtn').onclick=()=>{session=null;localStorage.removeItem(SESSION_KEY);updateAuth();showView('dashboard')};
+$('homeBtn').onclick=()=>{window.location.href='../index.html'};$('hamburger').onclick=()=>$('sidebar').classList.toggle('open');
+function fmt(n){return Number(n).toFixed(2).replace('.',',')}
+function renderChart(){let c=$('ikmChart'),ctx=c.getContext('2d'),w=c.clientWidth,h=c.clientHeight,dpr=window.devicePixelRatio||1;c.width=w*dpr;c.height=h*dpr;ctx.scale(dpr,dpr);ctx.clearRect(0,0,w,h);let arr=[...ikm].sort((a,b)=>a.year-b.year);if(!arr.length)return;let pad={l:45,r:20,t:20,b:35},min=Math.min(0,...arr.map(x=>x.value-5)),max=Math.max(100,...arr.map(x=>x.value+5));let x=i=>pad.l+(arr.length===1?(w-pad.l-pad.r)/2:i*(w-pad.l-pad.r)/(arr.length-1)),y=v=>h-pad.b-(v-min)*(h-pad.t-pad.b)/(max-min);
+ctx.font='10px Segoe UI';ctx.strokeStyle='#e2ebf5';ctx.fillStyle='#827985';ctx.lineWidth=1;[0,25,50,75,100].forEach(v=>{let yy=y(v);ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillText(v,pad.l-28,yy+3)});
+ctx.strokeStyle='#0969c7';ctx.lineWidth=3;ctx.beginPath();arr.forEach((a,i)=>i?ctx.lineTo(x(i),y(a.value)):ctx.moveTo(x(i),y(a.value)));ctx.stroke();
+arr.forEach((a,i)=>{ctx.fillStyle='#0969c7';ctx.beginPath();ctx.arc(x(i),y(a.value),5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#24466f';ctx.textAlign='center';ctx.fillText(fmt(a.value),x(i),y(a.value)-12);ctx.fillText(a.year,x(i),h-10)});ctx.textAlign='left'}
+function statusTag(s){let cls=s==='Selesai'||s==='Sudah Dikirim'?'green':s==='Dalam Proses'?'blue':s==='Perlu Revisi'||s==='Perlu Tindak Lanjut'?'orange':'red';return `<span class="tag ${cls}">${esc(s||'—')}</span>`}
+function renderIkm(){let q=$('ikmSearch')?.value?.toLowerCase()||'',arr=[...ikm].filter(d=>(d.year+' '+d.indicator+' '+d.status).toLowerCase().includes(q)).sort((a,b)=>a.year-b.year);$('ikmCount').textContent=arr.length+' data';$('ikmBody').innerHTML=arr.map(d=>`<tr><td>${d.year}</td><td>${esc(d.indicator)}</td><td><b>${fmt(d.value)}</b></td><td>${d.status?statusTag(d.status):'—'}</td><td>${esc(d.notes||'—')}</td><td>${canManage()?`<div class="action"><button class="link-btn" onclick="editIkm('${d.id}')">Ubah</button><button class="link-btn" style="background:#a83242" onclick="deleteIkm('${d.id}')">Hapus</button></div>`:'—'}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">Belum ada data.</td></tr>'}
+$('ikmSearch').addEventListener('input',renderIkm);
+function newIkm(){$('ikmForm').reset();$('ikmId').value='';$('ikmFormHeading').textContent='Tambah Data IKM';showView('ikmform')}
+function editIkm(id){let d=ikm.find(x=>x.id===id);if(!d)return;$('ikmId').value=id;$('iYear').value=d.year;$('iIndicator').value=d.indicator;$('iValue').value=d.value;$('iStatus').value=d.status||'';$('iNotes').value=d.notes||'';$('ikmFormHeading').textContent='Ubah Data IKM';showView('ikmform')}
+function deleteIkm(id){if(!canManage()||!confirm('Hapus data IKM ini?'))return;ikm=ikm.filter(x=>x.id!==id);save();renderAll()}
+$('ikmForm').onsubmit=e=>{e.preventDefault();if(!canManage())return;let id=$('ikmId').value||'ikm-'+Date.now(),d={id,year:Number($('iYear').value),indicator:$('iIndicator').value.trim(),value:Number($('iValue').value),status:$('iStatus').value.trim(),notes:$('iNotes').value.trim()};let old=ikm.some(x=>x.id===id);ikm=old?ikm.map(x=>x.id===id?d:x):[...ikm,d];save();showView('ikm')};
+function renderMonitors(){let q=$('monitorSearch')?.value?.toLowerCase()||'',f=$('actionFilter')?.value||'',arr=monitors.filter(d=>(!f||d.actionStatus===f)&&[d.indicator,d.year,d.actionText,d.notes].join(' ').toLowerCase().includes(q));$('monitorBody').innerHTML=arr.map(d=>`<tr><td><b>${esc(d.indicator)}</b><br><small>${esc(d.notes||'')}</small></td><td>${d.year}</td><td>${statusTag(d.actionStatus)}</td><td>${esc(d.actionText||'—')}</td><td>${d.fileName?`📎 ${esc(d.fileName)}`:d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">Buka tautan</a>`:'—'}</td><td>${statusTag(d.deliveryStatus)}</td><td>${canManage()?`<div class="action"><button class="link-btn" onclick="editMonitor('${d.id}')">Ubah</button><button class="link-btn" style="background:#a83242" onclick="deleteMonitor('${d.id}')">Hapus</button></div>`:'—'}</td></tr>`).join('')||'<tr><td colspan="7" class="empty">Belum ada data pemantauan. Admin dapat menambahkan data melalui menu Input / Kelola Data.</td></tr>'}
+$('monitorSearch').addEventListener('input',renderMonitors);$('actionFilter').addEventListener('change',renderMonitors);
+function newMonitor(){$('monitorForm').reset();$('monitorId').value='';$('formHeading').textContent='Input Pemantauan Pelayanan Publik';showView('add')}
+function editMonitor(id){let d=monitors.find(x=>x.id===id);if(!d)return;$('monitorId').value=id;$('mIndicator').value=d.indicator;$('mYear').value=d.year;$('mAction').value=d.actionStatus;$('mDelivery').value=d.deliveryStatus;$('mActionText').value=d.actionText||'';$('mNotes').value=d.notes||'';$('mUrl').value=d.url||'';$('formHeading').textContent='Ubah Pemantauan';showView('add')}
+function deleteMonitor(id){if(!canManage()||!confirm('Hapus data pemantauan ini?'))return;monitors=monitors.filter(x=>x.id!==id);save();renderAll()}
+$('monitorForm').onsubmit=async e=>{e.preventDefault();if(!canManage())return;let id=$('monitorId').value||'mon-'+Date.now(),old=monitors.find(x=>x.id===id),file=$('mFile').files[0],fileData=old?.fileData||'',fileName=old?.fileName||'';if(file){if(file.size>5*1024*1024){alert('Ukuran file maksimal 5 MB pada demo ini.');return}fileData=await new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)});fileName=file.name}
+let d={id,indicator:$('mIndicator').value.trim(),year:Number($('mYear').value),actionStatus:$('mAction').value,deliveryStatus:$('mDelivery').value,actionText:$('mActionText').value.trim(),notes:$('mNotes').value.trim(),url:$('mUrl').value.trim(),fileData,fileName,updatedAt:new Date().toLocaleDateString('id-ID')};monitors=old?monitors.map(x=>x.id===id?d:x):[...monitors,d];save();e.target.reset();$('monitorId').value='';showView('monitoring')};
+function renderEvidence(){let q=$('evidenceSearch')?.value?.toLowerCase()||'',arr=monitors.filter(d=>(d.fileName||d.url||'').toLowerCase().includes(q));$('evidenceList').innerHTML=arr.map(d=>`<div class="user-row"><span><b>${esc(d.indicator)}</b><br><small>${d.fileName?'File: '+esc(d.fileName):'Tautan bukti dukung'}</small></span>${d.fileData?`<a class="link-btn" download="${esc(d.fileName)}" href="${d.fileData}">Unduh</a>`:d.url?`<a class="link-btn" target="_blank" rel="noopener" href="${esc(d.url)}">Buka</a>`:'—'}</div>`).join('')||'<div class="empty">Belum ada bukti dukung yang tercatat.</div>'}
+$('evidenceSearch').addEventListener('input',renderEvidence);
+function renderDelivery(){let q=$('deliverySearch')?.value?.toLowerCase()||'',f=$('deliveryFilter')?.value||'',arr=monitors.filter(d=>(!f||d.deliveryStatus===f)&&[d.indicator,d.year,d.notes].join(' ').toLowerCase().includes(q));$('deliveryBody').innerHTML=arr.map(d=>`<tr><td>${esc(d.indicator)}</td><td>${d.year}</td><td>${statusTag(d.deliveryStatus)}</td><td>${esc(d.notes||'—')}</td><td>${esc(d.updatedAt||'—')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">Belum ada data pengiriman.</td></tr>'}
+$('deliverySearch').addEventListener('input',renderDelivery);$('deliveryFilter').addEventListener('change',renderDelivery);
+function renderDashboard(){let sorted=[...ikm].sort((a,b)=>b.year-a.year),latest=sorted[0];$('latestIkm').textContent=latest?fmt(latest.value):'—';$('inProgressStat').textContent=monitors.filter(x=>x.actionStatus==='Dalam Proses').length;$('doneStat').textContent=monitors.filter(x=>x.actionStatus==='Selesai').length;renderChart();$('monitorSummary').innerHTML=['Belum Dikerjakan','Dalam Proses','Perlu Tindak Lanjut','Selesai'].map(s=>`<div class="user-row"><span>${esc(s)}</span><b>${monitors.filter(x=>x.actionStatus===s).length}</b></div>`).join('')||'Belum ada pemantauan.'}
+function renderUsers(){$('userList').innerHTML='<h3 style="font-size:13px;margin:20px 0 8px">Daftar akun</h3>'+users.map(u=>`<div class="user-row"><span><b>${esc(u.display)}</b><br><small>${esc(u.username)} · ${u.role==='master'?'Master Admin':'Admin'}</small></span>${u.role==='admin'?`<button class="btn light" onclick="removeUser('${esc(u.username)}')">Hapus</button>`:'<span class="pill">Utama</span>'}</div>`).join('')}
+function removeUser(username){if(role()!=='master'||!confirm('Hapus akun Admin '+username+'?'))return;users=users.filter(u=>u.username!==username);localStorage.setItem(USERS_KEY,JSON.stringify(users));renderUsers()}
+$('userForm').onsubmit=e=>{e.preventDefault();if(role()!=='master')return;let username=$('newUsername').value.trim();if(users.some(u=>u.username===username)){alert('Nama pengguna sudah digunakan.');return}alert('Akun Admin bidang dikelola dari konfigurasi ORTIBALI. Pembuatan akun tambahan memerlukan backend.');return;e.target.reset();renderUsers();alert('Akun Admin berhasil dibuat.')};
+function exportCsv(type){let rows=type==='ikm'?ikm:monitors,keys=type==='ikm'?['year','indicator','value','status','notes']:['indicator','year','actionStatus','actionText','fileName','deliveryStatus','notes'];let csv=[keys.join(','),...rows.map(d=>keys.map(k=>'"'+String(d[k]??'').replace(/"/g,'""')+'"').join(','))].join('\r\n');let a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}));a.download=type==='ikm'?'data-ikm-pelayanan-publik.csv':'pemantauan-pelayanan-publik.csv';a.click();URL.revokeObjectURL(a.href)}
+function renderAll(){updateAuth();renderIkm();renderMonitors();renderEvidence();renderDelivery();renderUsers();renderDashboard()}
+renderAll();window.addEventListener('resize',()=>{if($('view-dashboard').classList.contains('active'))renderChart()});
+</script>
+<!-- ORTIBALI Supabase authentication + backend adapter -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../supabase-config.js"></script>
+<script src="../supabase-client.js"></script>
+<script src="../ortibali-backend.js"></script>
+<script src="../ortibali-workflow.js"></script>
+</body></html>
